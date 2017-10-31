@@ -252,31 +252,54 @@ public class ExcelUtil {
     		e.printStackTrace();
     	}
     }
+	/**
+     * ��list����д��һ���µ�excel
+     * @param data
+     * @param filePath
+     */
+    public static void writeFile(String[] title, List data,  String filePath) {
+    	Workbook workbook = null;
+    	String suffix = filePath.substring(filePath.lastIndexOf("."));
+		if (".xls".equals(suffix)) {
+			workbook = new HSSFWorkbook();
+			workbook.createSheet();
+		} else if(".xlsx".equals(suffix)) {
+			workbook = new XSSFWorkbook();
+			workbook.createSheet();
+		} else {
+			System.out.println("��������ȷ���ļ�����(ֻ֧��xls��xlsx)");
+		}
+    	try {
+    		FileOutputStream fileOut = null;
+    		File f = new File(filePath);
+    		if (!f.getParentFile().exists()) {
+    			f.getParentFile().mkdirs();
+    		}
+			fileOut = new FileOutputStream(filePath);
+			workbook.write(fileOut);
+			fileOut.close();
+			ExcelUtil eu = new ExcelUtil(filePath);
+			eu.writeRowData(0, title);
+			for (int i=1; i<data.size(); i++) {
+    			Object rowdata = data.get(i);
+    			eu.writeRowData(i, rowdata);
+    		}
+			eu.write();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
     
-    public static void main(String args[]) throws IOException {
+    /*public static void main(String args[]) throws IOException {
     	List data = new ArrayList<Test>();
     	for (int i=0; i<10; i++) {
     		data.add(new Test());
 		}
-    	ExcelUtil.writeFile(data, "D:\\hange_file\\test.xlsx");
+
     	ExcelUtil eu = new ExcelUtil("D:\\hange_file\\test.xlsx");
     	eu.writeRowData(20, new String[]{"1", "1"});
     	eu.write();
     	System.out.println(Arrays.toString(eu.readRowData(0)));
-    }
+    }*/
     
-}
-
-class Test {
-	private String a;
-	public int b;
-	protected double c;
-	public int d;
-	
-	public Test() {
-		a = "123����";
-		b = 123;
-		c = 123.456;
-		d = 520;
-	}
 }
