@@ -1,9 +1,11 @@
 package htof.control;
 
+import htof.service.TestService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpSession;
 public class TestControl {
     private static Logger logger = LoggerFactory.getLogger("TestControl");
 
+    @Autowired
+    private TestService testService;
+
     @RequestMapping
     @ResponseBody
     public String test(HttpServletRequest request) {
@@ -35,5 +40,11 @@ public class TestControl {
             e.printStackTrace();
         }
         return json.toString();
+    }
+
+    @RequestMapping(value = "checkDB")
+    @ResponseBody
+    public String test2(HttpServletRequest request) {
+        return testService.test();
     }
 }

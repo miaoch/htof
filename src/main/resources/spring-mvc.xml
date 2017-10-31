@@ -18,7 +18,7 @@
 
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
-    <!--<mvc:resourcescation="/static/" lo mapping="/static/**"/>-->
+    <mvc:resources mapping="/static/**" location="/static/" />
 
     <!-- Declare a view resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
