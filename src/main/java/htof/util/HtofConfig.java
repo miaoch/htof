@@ -17,19 +17,20 @@ public class HtofConfig {
     public static Token token;
     static {
         config = new Config(isSandbox, appKey, appSecret);
-        client= new OAuthClient(config);
+        client = new OAuthClient(config);
         token = client.getTokenInClientCredentials();
     }
 
     //重新获取token
     public static Token regetToken() {
-        return HtofConfig.token = client.getTokenInClientCredentials();
+
+        return token = client.getTokenInClientCredentials();
     }
 
     //通过refresh_token重新获取token
     public static Token refreshToken() {
         //根据refreshToken,刷新token
-        return HtofConfig.token = client.getTokenByRefreshToken(HtofConfig.token.getRefreshToken());
+        return token = client.getTokenByRefreshToken(HtofConfig.token.getRefreshToken());
     }
 
     public static void main(String args[]) {
