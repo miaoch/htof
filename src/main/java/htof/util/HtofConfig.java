@@ -10,8 +10,8 @@ import eleme.openapi.sdk.oauth.response.Token;
 public class HtofConfig {
     // 变量为true: 沙箱环境 false: 生产环境
     private static final boolean isSandbox = false;
-    private static final String appKey = "MpnAEml87E";
-    private static final String appSecret = "4cd4c8eb2f8b87dce64ca4cfc7e3de2e4dae9462";
+    private static final String appKey = ConfigReader.get("appKey");
+    private static final String appSecret = ConfigReader.get("appSecret");
     private static final OAuthClient client;
     public static final Config config;
     public static Token token;

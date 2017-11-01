@@ -1,5 +1,6 @@
 package htof.util;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,5 +12,31 @@ public class DateUtil {
 
     public static String date2String(Date date) {
         return DEFAULT_SDF.format(date);
+    }
+
+    public static String date2String(Date date, String format) {
+        return new SimpleDateFormat(format).format(date);
+    }
+
+    public static String StringDateAdd(String dateStr, String format, int day) {
+        String result = "";
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date date = sdf.parse(dateStr);
+            Long time = date.getTime() + day * 24L * 3600 * 1000;
+            date = new Date(time);
+            result = sdf.format(date);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public static String StringDateAdd(String dateStr, int day) {
+        return StringDateAdd(dateStr, "yyyy-MM-dd", day);
+    }
+
+    public static String currentDay() {
+        return date2String(new Date(), "yyyy年MM月dd日");
     }
 }
