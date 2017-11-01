@@ -121,6 +121,9 @@ public class TestControl {
                         discountDetails += oActivity.getName() + " " + oActivity.getAmount() + "\n";
                         discount += oActivity.getAmount();
                     }
+                    if (discountDetails.length() > 0) {
+                        discountDetails = discountDetails.substring(0, discountDetails.length() - 1);//去掉不必要的回车
+                    }
                 }
                 model.setDiscountDetails(discountDetails);
                 model.setDiscountPrice(discount);
@@ -138,10 +141,16 @@ public class TestControl {
                                     orderDetails += oGoodsItem.getName() + ": " + oGoodsItem.getPrice() + "×" + oGoodsItem.getQuantity() + "\n";
                                     orderPrice += oGoodsItem.getTotal();
                                 }
+                                if (orderDetails.length() > 0) {
+                                    orderDetails = orderDetails.substring(0, orderDetails.length() - 1);
+                                }
                             } else if (oGoodsGroup.getType().equals(OOrderDetailGroupType.extra)) {//额外 包括餐盒费
                                 for (OGoodsItem oGoodsItem : oGoodsItems) {
                                     lunchDetails += oGoodsItem.getName() + ": " + oGoodsItem.getPrice() + "×" + oGoodsItem.getQuantity() + "\n";
                                     lunchFee += oGoodsItem.getTotal();
+                                }
+                                if (lunchDetails.length() > 0) {
+                                    lunchDetails = lunchDetails.substring(0, lunchDetails.length() - 1);
                                 }
                             }
                         }
