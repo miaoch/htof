@@ -6,9 +6,9 @@
 </head>
 <body>
     <form action="#" method="post">
-        <%--<c:forEach items="${shopMap }" var="map">
+        <c:forEach items="${shopMap }" var="map">
             <input type="checkbox" value="${map.value }" name="shopIds">${map.key }<br>
-        </c:forEach>--%>
+        </c:forEach>
         开始时间:<input type="text" name="beginDate"><br>
         结束时间:<input type="text" name="endDate"><br>
         <button type="submit">提交</button>
