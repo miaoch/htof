@@ -1,9 +1,10 @@
 package htof.pojo;
 
 /**
+ * 导出excel专用
  * Created by miaoch on 2017/10/31.
  */
-public class Model1 {
+public class OrderLogExport {
     private String shopName;//商店名称
     private String orderTime;//下单时间
     private String orderDetails;//菜品详情

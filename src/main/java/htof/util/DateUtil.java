@@ -37,6 +37,6 @@ public class DateUtil {
     }
 
     public static String currentDay() {
-        return date2String(new Date(), "yyyy年MM月dd日");
+        return date2String(new Date(), "yyyy_MM_dd");
     }
 }

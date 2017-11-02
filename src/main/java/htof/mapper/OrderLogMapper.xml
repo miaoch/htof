@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.OrderLogDao" >
+    <resultMap id="orderlog" type="htof.pojo.OrderLog">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="shopId" column="shopId" jdbcType="BIGINT"/>
+        <result property="shopName" column="shopName" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createtime" jdbcType="BIGINT"/>
+        <result property="orderDetails" column="orderDetails" jdbcType="VARCHAR"/>
+        <result property="orderPrice" column="orderPrice" jdbcType="DECIMAL"/>
+        <result property="lunchDetails" column="lunchDetails" jdbcType="VARCHAR"/>
+        <result property="lunchFee" column="lunchFee" jdbcType="DECIMAL"/>
+        <result property="discountDetails" column="discountDetails" jdbcType="VARCHAR"/>
+        <result property="discountPrice" column="discountPrice" jdbcType="DECIMAL"/>
+        <result property="deliverFee" column="deliverFee" jdbcType="DECIMAL"/>
+        <result property="totalPay" column="totalPay" jdbcType="DECIMAL"/>
+        <result property="customerPhone" column="customerPhone" jdbcType="VARCHAR"/>
+        <result property="customerName" column="customerName" jdbcType="VARCHAR"/>
+        <result property="customerAddress" column="customerAddress" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="select" parameterType="htof.pojo.OrderLog" resultMap="orderlog">
+        select * from t_orderlog
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="shopId != null">
+                and shopId = #{shopId}
+            </if>
+            <if test="shopName != null">
+                and shopName = #{shopName}
+            </if>
+            <if test="customerPhone != null">
+                and customerPhone = #{customerPhone}
+            </if>
+        </trim>
+    </select>
+    <!--<update id="update" parameterType="htof.pojo.OrderLog">
+        update t_orderlog 
+        <trim prefix="set" suffixOverrides="," >
+            <if test="shopId != null">
+                and shopId = #{shopId}
+            </if>
+            
+        </trim>
+        where id = #{id}
+    </update>-->
+    <insert id="insert" parameterType="htof.pojo.OrderLog">
+        insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
+                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress)
+        VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee}
+        ,#{discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress})
+    </insert>
+</mapper>

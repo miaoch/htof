@@ -1,6 +1,5 @@
 package htof.control;
 
-import htof.service.TestService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -20,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 public class TestControl {
     private static Logger logger = LoggerFactory.getLogger("TestControl");
 
-    @Autowired
-    private TestService testService;
-
     @RequestMapping
     @ResponseBody
     public String test(HttpServletRequest request) {
@@ -40,9 +36,4 @@ public class TestControl {
         return json.toString();
     }
 
-    @RequestMapping(value = "checkDB")
-    @ResponseBody
-    public String test2(HttpServletRequest request) {
-        return testService.test();
-    }
 }

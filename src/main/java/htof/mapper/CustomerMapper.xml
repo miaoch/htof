@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.OrderLogDao" >
+    <resultMap id="customer" type="htof.pojo.Customer">
+        <id property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--<select id="select" parameterType="htof.pojo.OrderLog" resultType="orderlog">
+        select * from t_orderlog
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="shopId != null">
+                and shopId = #{shopId}
+            </if>
+            <if test="shopName != null">
+                and shopName = #{shopName}
+            </if>
+            <if test="customerPhone != null">
+                and customerPhone = #{customerPhone}
+            </if>
+        </trim>
+    </select>-->
+    <!--<update id="update" parameterType="htof.pojo.OrderLog">
+        update t_orderlog 
+        <trim prefix="set" suffixOverrides="," >
+            <if test="shopId != null">
+                and shopId = #{shopId}
+            </if>
+            
+        </trim>
+        where id = #{id}
+    </update>-->
+    <!--<insert id="insert" parameterType="htof.pojo.OrderLog">
+        insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
+                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress)
+        VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee
+        ,discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress})
+    </insert>-->
+    <insert id="saveOrUpdate" parameterType="htof.pojo.Customer">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from t_customer where phone = #{phone}
+        </selectKey>
+        <if test="count > 0">
+            update t_customer
+            set phone = #{phone}, name = #{name}, address = #{address}
+            where id = #{id}
+        </if>
+        <if test="count == 0">
+            insert into t_customer values(#{phone}, #{name}, #{address})
+        </if>
+    </insert>
+</mapper>

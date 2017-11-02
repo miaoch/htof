@@ -1,8 +1,7 @@
 package htof.control;
 
-import htof.pojo.Model1;
+import htof.pojo.OrderLogExport;
 import htof.service.OrderService;
-import htof.util.ConfigReader;
 import htof.util.Constants;
 import htof.util.DateUtil;
 import htof.util.ExcelUtil;
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
-import java.util.Date;
 
 /**
  * Created by miaoch on 2017/11/1.
@@ -42,7 +41,7 @@ public class OrderControl {
         response.addHeader("Content-Disposition","attachment;filename=" + DateUtil.currentDay() + ".xls");
         try {
             OutputStream os = response.getOutputStream();
-            ExcelUtil.write2os(orderService.getAllOrders(shopIdStr, beginDate, endDate), Model1.getTitle(), os , "xls");
+            ExcelUtil.write2os(orderService.getAllOrders(shopIdStr, beginDate, endDate), OrderLogExport.getTitle(), os , "xls");
             os.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,4 +53,25 @@ public class OrderControl {
         model.addAttribute("shopMap", Constants.shopMap);
         return "/order/export";
     }
+
+    /*@RequestMapping(value = "orderlog", method = RequestMethod.GET)
+    public String orderlog(Model model) {
+        model.addAttribute("shopMap", Constants.shopMap);
+        return "/order/orderlog";
+    }
+
+    @RequestMapping(value = "orderlog", method = RequestMethod.POST)
+    @ResponseBody
+    public String orderlog(HttpServletRequest request, HttpServletResponse response) {
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+        String[] shopIdStr = request.getParameterValues("shopIds");
+        try {
+            orderService.getAllOrders(shopIdStr, beginDate, endDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+        return "success";
+    }*/
 }
