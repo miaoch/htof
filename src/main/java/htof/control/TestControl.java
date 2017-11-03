@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 暂定为推送接口
  * Created by miaoch on 2017/10/30.
  */
 @Controller
