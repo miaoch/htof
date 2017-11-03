@@ -8,12 +8,12 @@ import java.util.Properties;
 /**
  * Created by miaoch on 2017/11/1.
  */
-public class ConfigReader {
+public class PropReader {
     private static Properties pro = new Properties();
     static {
         InputStream in = null;
         try {
-            in = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties");
+            in = PropReader.class.getClassLoader().getResourceAsStream("config.properties");
             pro.load(in);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

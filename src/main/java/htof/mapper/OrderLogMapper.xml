@@ -35,16 +35,6 @@
             </if>
         </trim>
     </select>
-    <!--<update id="update" parameterType="htof.pojo.OrderLog">
-        update t_orderlog 
-        <trim prefix="set" suffixOverrides="," >
-            <if test="shopId != null">
-                and shopId = #{shopId}
-            </if>
-            
-        </trim>
-        where id = #{id}
-    </update>-->
     <insert id="insert" parameterType="htof.pojo.OrderLog">
         insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
                           ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress)

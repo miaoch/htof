@@ -100,7 +100,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20090211</version>
+            <version>20160810</version>
         </dependency>
         <!-- slf4j log4j日志 -->
         <dependency>

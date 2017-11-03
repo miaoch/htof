@@ -8,39 +8,6 @@
         <result property="lasttime" column="lasttime" jdbcType="BIGINT"/>
         <result property="count" column="count" jdbcType="BIGINT"/>
     </resultMap>
-    <!--<select id="select" parameterType="htof.pojo.OrderLog" resultType="orderlog">
-        select * from t_orderlog
-        <trim prefix="WHERE" prefixOverrides="AND | OR ">
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="shopId != null">
-                and shopId = #{shopId}
-            </if>
-            <if test="shopName != null">
-                and shopName = #{shopName}
-            </if>
-            <if test="customerPhone != null">
-                and customerPhone = #{customerPhone}
-            </if>
-        </trim>
-    </select>-->
-    <!--<update id="update" parameterType="htof.pojo.OrderLog">
-        update t_orderlog 
-        <trim prefix="set" suffixOverrides="," >
-            <if test="shopId != null">
-                and shopId = #{shopId}
-            </if>
-            
-        </trim>
-        where id = #{id}
-    </update>-->
-    <!--<insert id="insert" parameterType="htof.pojo.OrderLog">
-        insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
-                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress)
-        VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee
-        ,discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress})
-    </insert>-->
     <insert id="saveOrUpdate" parameterType="htof.pojo.Customer">
         <selectKey keyProperty="count"  resultType="int" order="BEFORE">
             select count(*) from t_customer where phone = #{phone} and lasttime &lt; #{lasttime}

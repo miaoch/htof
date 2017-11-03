@@ -1,5 +1,3 @@
-package htof.service;
-
 import eleme.openapi.sdk.api.entity.order.*;
 import eleme.openapi.sdk.api.enumeration.order.OOrderDetailGroupType;
 import eleme.openapi.sdk.api.exception.UnauthorizedException;
@@ -8,8 +6,9 @@ import htof.dao.OrderLogDao;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
 import htof.pojo.OrderLogExport;
+import htof.service.TTokenService;
 import htof.util.DateUtil;
-import htof.util.HtofConfig;
+import htof.util.ConfigUtil;
 import htof.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +25,18 @@ import java.util.List;
 public class OrderService {
     private static Logger logger = LoggerFactory.getLogger("OrderService");
 
-    eleme.openapi.sdk.api.service.OrderService orderService =
-            new eleme.openapi.sdk.api.service.OrderService(HtofConfig.config, HtofConfig.token);
+
 
     @Autowired
     private CustomerDao customerDao;
     @Autowired
     private OrderLogDao orderLogDao;
+
+    @Autowired
+    private TTokenService tTokenService;
+
+    eleme.openapi.sdk.api.service.OrderService orderService =
+            new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
     /**
      * 根据shopId号和日期获得excel导出数据
      *
@@ -52,8 +56,8 @@ public class OrderService {
                 list = orderService.getAllOrders(shopId, page, pageSize, date);
             } catch (UnauthorizedException e) {
                 logger.info("token失效，重新获取...");
-                HtofConfig.regetToken();
-                orderService = new eleme.openapi.sdk.api.service.OrderService(HtofConfig.config, HtofConfig.token);
+                ConfigUtil.regetToken();
+                orderService = new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
                 list = orderService.getAllOrders(shopId, page, pageSize, date);
             }
             data = list.getList();
@@ -205,8 +209,8 @@ public class OrderService {
                                 list = orderService.getAllOrders(shopIdL, page, pageSize, end);
                             } catch (UnauthorizedException e) {
                                 logger.info("token失效，重新获取...");
-                                HtofConfig.regetToken();
-                                orderService = new eleme.openapi.sdk.api.service.OrderService(HtofConfig.config, HtofConfig.token);
+                                ConfigUtil.regetToken();
+                                orderService = new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
                                 list = orderService.getAllOrders(shopIdL, page, pageSize, end);
                             }
                             data = list.getList();

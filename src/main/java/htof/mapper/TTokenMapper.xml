@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.TTokenDao" >
+    <resultMap id="tToken" type="htof.pojo.TToken">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="accessToken" column="accessToken" jdbcType="VARCHAR"/>
+        <result property="tokenType" column="tokenType" jdbcType="VARCHAR"/>
+        <result property="refreshToken" column="refreshToken" jdbcType="VARCHAR"/>
+        <result property="expires" column="expires" jdbcType="BIGINT"/>
+        <result property="createtime" column="createtime" jdbcType="BIGINT"/>
+    </resultMap>
+    <select id="getToken" resultMap="tToken">
+        select * from t_token
+        where id = '1'
+    </select>
+    <update id="updateToken" parameterType="htof.pojo.TToken">
+        update t_token
+        <trim prefix="set" suffixOverrides="," >
+            <if test="accessToken != null">
+                 accessToken = #{accessToken},
+            </if>
+            <if test="tokenType != null">
+                tokenType = #{tokenType},
+            </if>
+            <if test="refreshToken != null">
+                refreshToken = #{refreshToken},
+            </if>
+            <if test="expires != null and expires != 0">
+                expires = #{expires},
+            </if>
+            <if test="createtime != null and createtime != 0">
+                createtime = #{createtime},
+            </if>
+        </trim>
+        where id = '1'
+    </update>
+</mapper>

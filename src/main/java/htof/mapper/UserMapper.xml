@@ -24,35 +24,4 @@
             </if>
         </trim>
     </select>
-    <!--<update id="update" parameterType="htof.pojo.OrderLog">
-        update t_orderlog 
-        <trim prefix="set" suffixOverrides="," >
-            <if test="shopId != null">
-                and shopId = #{shopId}
-            </if>
-            
-        </trim>
-        where id = #{id}
-    </update>-->
-    <!--<insert id="insert" parameterType="htof.pojo.OrderLog">
-        insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
-                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress)
-        VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee
-        ,discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress})
-    </insert>-->
-    <!--<insert id="saveOrUpdate" parameterType="htof.pojo.Customer">
-        <selectKey keyProperty="count"  resultType="int" order="BEFORE">
-            select count(*) from t_customer where phone = #{phone} and lasttime &lt; #{lasttime}
-        </selectKey>
-        <if test="count > 0">
-            update t_customer
-            set phone = #{phone}, name = #{name}, address = #{address},
-              lasttime = #{lasttime}, count = count + 1
-            where phone = #{phone}
-        </if>
-        <if test="count == 0">
-            insert into t_customer values(#{phone}, #{name}, #{address}, #{lasttime}, 1)
-            ON DUPLICATE KEY update count = count + 1
-        </if>
-    </insert>-->
 </mapper>
