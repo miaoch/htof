@@ -8,6 +8,8 @@ public class Customer {
     private String phone;//手机号
     private String name;//顾客称呼
     private String address;//顾客地址
+    private long lasttime;//最后一次购买时间
+    private long count;//出现次数
 
     public String getPhone() {
         return phone;
@@ -31,5 +33,21 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public long getLasttime() {
+        return lasttime;
+    }
+
+    public void setLasttime(long lasttime) {
+        this.lasttime = lasttime;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
     }
 }

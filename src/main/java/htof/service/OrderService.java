@@ -221,8 +221,9 @@ public class OrderService {
                                 ol.setCustomerAddress(oOrder.getDeliveryPoiAddress());//顾客地址
                                 ol.setCustomerPhone(StringUtil.list2String(oOrder.getPhoneList()));//顾客手机号
                                 Customer customer = new Customer();
-                                customer.setAddress(oOrder.getDeliveryPoiAddress());
-                                customer.setName(oOrder.getConsignee());
+                                customer.setAddress(ol.getCustomerAddress());
+                                customer.setName(ol.getCustomerName());
+                                customer.setLasttime(ol.getCreatetime());
                                 if (oOrder.getPhoneList() != null) {
                                     for (String phone : oOrder.getPhoneList()) {
                                         customer.setPhone(phone.replaceAll("[^\\d]", ""));

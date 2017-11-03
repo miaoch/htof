@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="htof.dao.OrderLogDao" >
+<mapper namespace="htof.dao.CustomerDao" >
     <resultMap id="customer" type="htof.pojo.Customer">
         <id property="phone" column="phone" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="lasttime" column="lasttime" jdbcType="BIGINT"/>
+        <result property="count" column="count" jdbcType="BIGINT"/>
     </resultMap>
     <!--<select id="select" parameterType="htof.pojo.OrderLog" resultType="orderlog">
         select * from t_orderlog
@@ -40,16 +42,18 @@
         ,discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress})
     </insert>-->
     <insert id="saveOrUpdate" parameterType="htof.pojo.Customer">
-        <selectKey keyProperty="count" resultType="int" order="BEFORE">
-            select count(*) from t_customer where phone = #{phone}
+        <selectKey keyProperty="count"  resultType="int" order="BEFORE">
+            select count(*) from t_customer where phone = #{phone} and lasttime &lt; #{lasttime}
         </selectKey>
         <if test="count > 0">
             update t_customer
-            set phone = #{phone}, name = #{name}, address = #{address}
-            where id = #{id}
+            set phone = #{phone}, name = #{name}, address = #{address},
+              lasttime = #{lasttime}, count = count + 1
+            where phone = #{phone}
         </if>
         <if test="count == 0">
-            insert into t_customer values(#{phone}, #{name}, #{address})
+            insert into t_customer values(#{phone}, #{name}, #{address}, #{lasttime}, 1)
+            ON DUPLICATE KEY update count = count + 1
         </if>
     </insert>
 </mapper>

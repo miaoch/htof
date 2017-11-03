@@ -54,7 +54,7 @@ public class OrderControl {
         return "/order/export";
     }
 
-    /*@RequestMapping(value = "orderlog", method = RequestMethod.GET)
+    @RequestMapping(value = "orderlog", method = RequestMethod.GET)
     public String orderlog(Model model) {
         model.addAttribute("shopMap", Constants.shopMap);
         return "/order/orderlog";
@@ -67,11 +67,11 @@ public class OrderControl {
         String endDate = request.getParameter("endDate");
         String[] shopIdStr = request.getParameterValues("shopIds");
         try {
-            orderService.getAllOrders(shopIdStr, beginDate, endDate);
+            orderService.orderLog2DB(shopIdStr, beginDate, endDate);
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
         return "success";
-    }*/
+    }
 }
