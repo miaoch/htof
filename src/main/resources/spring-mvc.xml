@@ -9,15 +9,15 @@
             http://www.springframework.org/schema/context/spring-context-3.2.xsd
             http://www.springframework.org/schema/mvc
             http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
-    <!-- ÆôÓÃspring mvc ×¢½â -->
+    <!-- ï¿½ï¿½ï¿½ï¿½spring mvc ×¢ï¿½ï¿½ -->
     <context:annotation-config/>
-    <!--×Ô¶¯É¨Ãè-->
+    <!--ï¿½Ô¶ï¿½É¨ï¿½ï¿½-->
     <context:component-scan base-package="htof"/>
 
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
 
-    <!-- Ä¬ÈÏÈ«¾ÖÒì³£ÅäÖÃ£¬Óë@ExceptionHandlerÑ¡ÆäÒ»ÅäÖÃ -->
+    <!-- Ä¬ï¿½ï¿½È«ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½@ExceptionHandlerÑ¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionAttribute" value="ex"></property>
         <property name="exceptionMappings">
@@ -33,13 +33,18 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <!-- sessionÀ¹½ØÆ÷ -->
+    <!-- session -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/*"/>
+            <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/easyui/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/test/**"/>
             <mvc:exclude-mapping path="/login"/>
-            <mvc:exclude-mapping path="/test"/>
             <bean class="htof.interceptors.SessionInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

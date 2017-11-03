@@ -23,7 +23,7 @@ public class LoginControl {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login")
     public String login(String username, String password, HttpSession session, HttpServletRequest request) {
         logger.info("{} login at {}", username, DateUtil.currentDayInSecond());
         try {
