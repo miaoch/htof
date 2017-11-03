@@ -1,9 +1,11 @@
 package htof.pojo;
 
+import java.io.Serializable;
+
 /**
  * Created by miaoch on 2017/11/3.
  */
-public class User {
+public class User  implements Serializable {
     private long id;
     private String username;
     private String password;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.ShopDao" >
+    <resultMap id="shop" type="htof.pojo.Shop">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="select" resultMap="shop">
+        select * from t_shop
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null and id != 0">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name like concat('%', ${name}, '%')
+            </if>
+        </trim>
+    </select>
+    <select id="selectAllShop" resultMap="shop">
+        select * from t_shop
+    </select>
+</mapper>

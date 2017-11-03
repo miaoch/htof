@@ -1,21 +1,17 @@
 package htof.control;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import eleme.openapi.sdk.api.entity.order.OrderList;
 import eleme.openapi.sdk.api.exception.ServiceException;
 import eleme.openapi.sdk.api.service.OrderService;
-import htof.service.TTokenService;
 import htof.util.ConfigUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 暂定为推送接口
  * Created by miaoch on 2017/10/30.
  */
 @Controller
@@ -23,11 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestControl {
     private static Logger logger = LoggerFactory.getLogger("TestControl");
 
-    @Autowired
-    private TTokenService tTokenService;
-
     @RequestMapping
     @ResponseBody
+    // * 暂定为推送接口
     public String test() {
         JSONObject json = new JSONObject();
         json.put("message", "ok");
@@ -37,14 +31,26 @@ public class TestControl {
     @RequestMapping(value = "/getToken")
     @ResponseBody
     public String getToken() {
-        OrderService orderService = new OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
         OrderList ol = null;
+        OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());
         try {
             ol = orderService.getAllOrders(150996507L, 1, 10, "2017-11-03");
         } catch (ServiceException e) {
             logger.error("session 失效，请重试");
-            tTokenService.getToken(true);//重新获取token
+            ConfigUtil.getToken(true);//重新获取token
+            try {
+                ol = orderService.getAllOrders(150996507L, 1, 10, "2017-11-03");
+            } catch (ServiceException e1) {
+                e1.printStackTrace();
+            }
         }
-        return ol.toString();
+        return "123";
+    }
+
+    @RequestMapping(value = "/resetToken")
+    @ResponseBody
+    public String resetToken() {
+        ConfigUtil.getToken(true);//重新获取token
+        return "success";
     }
 }

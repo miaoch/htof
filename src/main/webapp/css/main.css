@@ -73,8 +73,7 @@ a {
 
 .wrap {
 	width: 100%;
-	//background: url(../images/loginBg2_bak.png) no-repeat;
-	background: url(../images/login_new.jpg) no-repeat;
+	background: url(../images/loginBg2_bak.png) no-repeat;
 	background-size: 100% 100%;
 }
 
@@ -141,7 +140,7 @@ a {
 
 .header h1 {
 	float: left;
-	font: 28px/54px "΢���ź�";
+	font: 28px/54px "微软雅黑";
 	color: #34aedb;
 }
 
@@ -821,7 +820,7 @@ a {
 	height: 100%;
 	color: #4c4f4f;
 	font-size: 14px;
-	font-family: "����";
+	font-family: "微软雅黑";
 	box-sizing: border-box;
 	padding: 0 4px;
 }
@@ -838,7 +837,7 @@ a {
 	cursor: text;
 	color: #4c4f4f;
 	font-size: 14px;
-	font-family: "����";
+	font-family: "微软雅黑";
 }
 
 .aside2P1 {

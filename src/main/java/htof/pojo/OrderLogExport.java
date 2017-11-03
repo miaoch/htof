@@ -1,10 +1,12 @@
 package htof.pojo;
 
+import java.io.Serializable;
+
 /**
  * 导出excel专用
  * Created by miaoch on 2017/10/31.
  */
-public class OrderLogExport {
+public class OrderLogExport  implements Serializable {
     private String shopName;//商店名称
     private String orderTime;//下单时间
     private String orderDetails;//菜品详情

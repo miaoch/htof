@@ -23,14 +23,14 @@ public class LoginControl {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login")
     public String login(String username, String password, HttpSession session, HttpServletRequest request) {
         logger.info("{} login at {}", username, DateUtil.currentDayInSecond());
         try {
             User user = userService.login(username, password);
             if (user != null) {
                 session.setAttribute("user", user);
-                return "index";//返回8大选项页面
+                return "index";//返回选项页面
             } else {
                 request.setAttribute("error", "1");
                 return "login";

@@ -1,3 +1,4 @@
+/*
 import eleme.openapi.sdk.api.entity.order.*;
 import eleme.openapi.sdk.api.enumeration.order.OOrderDetailGroupType;
 import eleme.openapi.sdk.api.exception.UnauthorizedException;
@@ -6,7 +7,6 @@ import htof.dao.OrderLogDao;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
 import htof.pojo.OrderLogExport;
-import htof.service.TTokenService;
 import htof.util.DateUtil;
 import htof.util.ConfigUtil;
 import htof.util.StringUtil;
@@ -18,9 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * Created by miaoch on 2017/11/1.
- */
+ *//*
+
 @Service("orderService")
 public class OrderService {
     private static Logger logger = LoggerFactory.getLogger("OrderService");
@@ -32,19 +34,18 @@ public class OrderService {
     @Autowired
     private OrderLogDao orderLogDao;
 
-    @Autowired
-    private TTokenService tTokenService;
-
     eleme.openapi.sdk.api.service.OrderService orderService =
-            new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
-    /**
+            new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());
+    */
+/**
      * 根据shopId号和日期获得excel导出数据
      *
      * @param shopId 2289642L
      * @param date   2017-10-31
      * @return excelList数据
      * @throws Exception 调用接口失败
-     */
+     *//*
+
     private List getOrders(long shopId, String date) throws Exception {
         int page = 1, pageSize = 50;
         List<OOrder> data;
@@ -56,8 +57,8 @@ public class OrderService {
                 list = orderService.getAllOrders(shopId, page, pageSize, date);
             } catch (UnauthorizedException e) {
                 logger.info("token失效，重新获取...");
-                ConfigUtil.regetToken();
-                orderService = new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
+                //ConfigUtil.regetToken();
+                orderService = new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());
                 list = orderService.getAllOrders(shopId, page, pageSize, date);
             }
             data = list.getList();
@@ -124,14 +125,16 @@ public class OrderService {
         return export;
     }
 
-    /**
+    */
+/**
      * 根据shopId号和日期获得excel导出数据
      *
      * @param shopIds shopId数组
      * @param date    2017-10-31
      * @return excelList数据
      * @throws Exception 调用接口失败
-     */
+     *//*
+
     public List getAllOrders(String[] shopIds, String date) throws Exception {
         List<OrderLogExport> export = new ArrayList<OrderLogExport>();
         if (shopIds != null) {
@@ -143,14 +146,16 @@ public class OrderService {
         return export;
     }
 
-    /**
+    */
+/**
      * 根据shopId号和日期获得excel导出数据
      *
      * @param shopIds shopId数组
      * @param dates   [2017-10-31,...]
      * @return excelList数据
      * @throws Exception 调用接口失败
-     */
+     *//*
+
     public List getAllOrders(String[] shopIds, String[] dates) throws Exception {
         List<OrderLogExport> export = new ArrayList<OrderLogExport>();
         if (dates != null) {
@@ -166,7 +171,8 @@ public class OrderService {
         return export;
     }
 
-    /**
+    */
+/**
      * 根据shopId号和日期获得excel导出数据
      *
      * @param shopIds shopId数组
@@ -174,7 +180,8 @@ public class OrderService {
      * @param endDate 2017-10-31
      * @return excelList数据
      * @throws Exception 调用接口失败
-     */
+     *//*
+
     public List getAllOrders(String[] shopIds, String beginDate, String endDate) throws Exception {
         List<OrderLogExport> export = new ArrayList<OrderLogExport>();
         if (beginDate != null && endDate != null && beginDate.compareTo(endDate) <= 0) {
@@ -209,8 +216,8 @@ public class OrderService {
                                 list = orderService.getAllOrders(shopIdL, page, pageSize, end);
                             } catch (UnauthorizedException e) {
                                 logger.info("token失效，重新获取...");
-                                ConfigUtil.regetToken();
-                                orderService = new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), tTokenService.getToken());
+                                //ConfigUtil.regetToken();
+                                orderService = new eleme.openapi.sdk.api.service.OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());
                                 list = orderService.getAllOrders(shopIdL, page, pageSize, end);
                             }
                             data = list.getList();
@@ -292,3 +299,4 @@ public class OrderService {
         }
     }
 }
+*/

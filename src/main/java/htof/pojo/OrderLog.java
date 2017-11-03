@@ -1,10 +1,12 @@
 package htof.pojo;
 
+import java.io.Serializable;
+
 /**
  * 数据库对应pojo
  * Created by miaoch on 2017/11/2.
  */
-public class OrderLog {
+public class OrderLog  implements Serializable {
     private long id;
     private long shopId;//商店ID
     private String shopName;//商店名称

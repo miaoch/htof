@@ -8,15 +8,6 @@
 <title>登录</title>
 <link rel="stylesheet" type="text/css" href="${PATH}/css/main.css"/>
 <style type="text/css">
-.em {
-	font-size: 14px;
-	position: absolute;
-	right: 10px;
-	top: 35px;
-	display: inline-block;
-	color: #fff;
-	cursor: pointer;
-}
 .logtitle {
 	text-align:center;
 	margin: 0px auto;

@@ -1,10 +1,12 @@
 package htof.pojo;
 
+import java.io.Serializable;
+
 /**
  * 数据库对应pojo
  * Created by miaoch on 2017/11/2.
  */
-public class Customer {
+public class Customer  implements Serializable {
     private String phone;//手机号
     private String name;//顾客称呼
     private String address;//顾客地址

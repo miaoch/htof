@@ -1,3 +1,4 @@
+/*
 import htof.pojo.OrderLogExport;
 import htof.util.Constants;
 import htof.util.DateUtil;
@@ -15,9 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 
+*/
 /**
  * Created by miaoch on 2017/11/1.
- */
+ *//*
+
 @Controller
 @RequestMapping("/order")
 public class OrderControl {
@@ -72,3 +75,4 @@ public class OrderControl {
         return "success";
     }
 }
+*/
