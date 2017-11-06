@@ -1,4 +1,4 @@
-package htof.task;
+package htof.service;
 
 import eleme.openapi.sdk.api.entity.order.*;
 import eleme.openapi.sdk.api.enumeration.order.OOrderDetailGroupType;
@@ -18,18 +18,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by miaoch on 2017/11/4.
+ * Created by miaoch on 2017/11/6.
  */
-@Component
-public class OrderTask {
-    private static Logger logger = LoggerFactory.getLogger("OrderService");
+@Service("testService")
+public class TestService {
+    private static Logger logger = LoggerFactory.getLogger("TestService");
 
     @Autowired
     private CustomerDao customerDao;
@@ -38,11 +38,13 @@ public class OrderTask {
     @Autowired
     private ShopDao shopDao;
 
-    //@Scheduled(cron = "0 55 23 * * ? ") //每天23.55执行一次
     public void taskCycle() {
-        String date = DateUtil.date2String(new Date(), "yyyy-MM-dd");
-        OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken(true));//每日由该接口重新生成session
-        statistics(orderService, date);
+        String beginDate="2017-01-01", endDate="2017-11-06";
+        OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());//每日由该接口重新生成session
+        while (beginDate.compareTo(endDate) <= 0) {
+            statistics(orderService, beginDate);
+            beginDate = DateUtil.StringDateAdd(beginDate, 1);
+        }
     }
 
     /**

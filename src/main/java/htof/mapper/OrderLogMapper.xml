@@ -42,6 +42,8 @@
                 and orderId = #{orderId}
             </if>
         </trim>
+        /*暂时*/
+        limit 20
     </select>
     <insert id="insert" parameterType="htof.pojo.OrderLog">
         insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee

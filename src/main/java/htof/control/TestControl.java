@@ -3,10 +3,13 @@ package htof.control;
 import eleme.openapi.sdk.api.entity.order.OrderList;
 import eleme.openapi.sdk.api.exception.ServiceException;
 import eleme.openapi.sdk.api.service.OrderService;
+import htof.service.TestService;
+import htof.task.OrderTask;
 import htof.util.ConfigUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestControl {
     private static Logger logger = LoggerFactory.getLogger("TestControl");
 
+    @Autowired
+    private TestService testService;
     @RequestMapping
     @ResponseBody
     // * 暂定为推送接口
@@ -47,10 +52,10 @@ public class TestControl {
         return "123";
     }
 
-    @RequestMapping(value = "/resetToken")
+    @RequestMapping(value = "/getDate")
     @ResponseBody
     public String resetToken() {
-        ConfigUtil.getToken(true);//重新获取token
-        return "success";
+        testService.taskCycle();
+        return true + "";
     }
 }
