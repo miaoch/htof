@@ -74,7 +74,7 @@
 		</ul>
 	</div>
 </div>
-<%@include file="../../common/pagination.jsp" %>
+<%@include file="../common/pagination.jsp" %>
 <script src="${PATH }/easyui/jquery.easyui.min.js"></script>
 <script src="${PATH }/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>

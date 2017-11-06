@@ -3,6 +3,7 @@
 <mapper namespace="htof.dao.CustomerDao" >
     <resultMap id="customer" type="htof.pojo.Customer">
         <id property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="address" column="address" jdbcType="VARCHAR"/>
         <result property="lasttime" column="lasttime" jdbcType="BIGINT"/>
@@ -14,12 +15,12 @@
         </selectKey>
         <if test="count > 0">
             update t_customer
-            set phone = #{phone}, name = #{name}, address = #{address},
+            set phone = #{phone}, name = #{name}, address = #{address},userId = #{userId},
               lasttime = #{lasttime}, count = count + 1
             where phone = #{phone}
         </if>
         <if test="count == 0">
-            insert into t_customer values(#{phone}, #{name}, #{address}, #{lasttime}, 1)
+            insert into t_customer values(#{phone}, #{userId}, #{name}, #{address}, #{lasttime}, 1)
             ON DUPLICATE KEY update count = count + 1
         </if>
     </insert>

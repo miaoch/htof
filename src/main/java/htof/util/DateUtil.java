@@ -40,6 +40,6 @@ public class DateUtil {
         return date2String(new Date(), "yyyy_MM_dd");
     }
     public static String currentDayInSecond() {
-        return date2String(new Date(), "yyyy_MM_dd hh:mm:ss");
+        return date2String(new Date(), "yyyy_MM_dd HH:mm:ss");
     }
 }

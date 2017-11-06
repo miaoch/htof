@@ -17,14 +17,16 @@
         <result property="customerPhone" column="customerPhone" jdbcType="VARCHAR"/>
         <result property="customerName" column="customerName" jdbcType="VARCHAR"/>
         <result property="customerAddress" column="customerAddress" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="orderId" column="orderId" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="select" parameterType="htof.pojo.OrderLog" resultMap="orderlog">
         select * from t_orderlog
         <trim prefix="WHERE" prefixOverrides="AND | OR ">
-            <if test="id != null">
+            <if test="id != null and id != 0">
                 and id = #{id}
             </if>
-            <if test="shopId != null">
+            <if test="shopId != null and id != 0">
                 and shopId = #{shopId}
             </if>
             <if test="shopName != null">
@@ -33,12 +35,18 @@
             <if test="customerPhone != null">
                 and customerPhone = #{customerPhone}
             </if>
+            <if test="userId != null and id != 0">
+                and userId = #{userId}
+            </if>
+            <if test="orderId != null">
+                and orderId = #{orderId}
+            </if>
         </trim>
     </select>
     <insert id="insert" parameterType="htof.pojo.OrderLog">
         insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
-                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress)
+                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress, userId, orderId)
         VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee}
-        ,#{discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress})
+        ,#{discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress}, #{userId}, #{orderId})
     </insert>
 </mapper>

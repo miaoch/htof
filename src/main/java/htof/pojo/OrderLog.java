@@ -22,6 +22,8 @@ public class OrderLog  implements Serializable {
     private String customerPhone;//手机号
     private String customerName;//顾客称呼
     private String customerAddress;//顾客地址
+    private long userId;//饿了么的userId套用
+    private String orderId;//饿了么的订单套用
 
     public long getId() {
         return id;
@@ -141,5 +143,21 @@ public class OrderLog  implements Serializable {
 
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }
