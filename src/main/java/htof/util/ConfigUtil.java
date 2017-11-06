@@ -56,6 +56,7 @@ public class ConfigUtil {
                         " expires = ?," +
                         " createtime = ?" +
                         " where id = '1'", params);
+                token = DBUtil.executeQuery("select * from t_token where id = '1'", null, Token.class).get(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
