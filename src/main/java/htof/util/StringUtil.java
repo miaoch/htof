@@ -11,6 +11,13 @@ public class StringUtil {
         return list2String(list, ",");
     }
 
+    public static boolean isEmpty(String s) {
+        return s == null || "".equals(s);
+    }
+
+    public static boolean isNotEmpty(String s) {
+        return s != null && !"".equals(s);
+    }
     public static String list2String(List list, String delimiter) {
         if (list == null || list.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();

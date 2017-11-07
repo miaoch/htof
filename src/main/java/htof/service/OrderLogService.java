@@ -1,5 +1,7 @@
 package htof.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import htof.dao.OrderLogDao;
 import htof.pojo.OrderLog;
 import htof.pojo.User;
@@ -22,5 +24,9 @@ public class OrderLogService {
 
     public List<OrderLog> selectAll() {
         return orderLogDao.select(new OrderLog());
+    }
+
+    public PageList<OrderLog> selectPageList(OrderLog orderLog, PageBounds pb) {
+        return orderLogDao.selectPageList(orderLog, pb);
     }
 }

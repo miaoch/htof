@@ -38,7 +38,7 @@ public class OrderTask {
     @Autowired
     private ShopDao shopDao;
 
-    //@Scheduled(cron = "0 55 23 * * ? ") //每天23.55执行一次
+    @Scheduled(cron = "0 55 23 * * ? ") //每天23.55执行一次
     public void taskCycle() {
         String date = DateUtil.date2String(new Date(), "yyyy-MM-dd");
         OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken(true));//每日由该接口重新生成session

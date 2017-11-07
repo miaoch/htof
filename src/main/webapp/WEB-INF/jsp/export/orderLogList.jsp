@@ -34,10 +34,9 @@
             </a>
         </p>
     </h4>
-    <form id="searchform" class="form-inline" role="form" action="list" method="get" style="margin: 5px 0px 0px 14px;">
+    <form id="searchform" class="form-inline" role="form" action="orderLogList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
-            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期"
-                   readonly="readonly">
+            <input type="text" class="form-control" id="search" name="orderId" value="${orderId }" placeholder="订单号">
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>
@@ -73,26 +72,6 @@
                     </span>
                 </li>
             </c:forEach>
-            <%--</c:forEach><c:forEach var="record" items="${page.recordList}">
-                <li>
-                    <em style="width:15%"><c:out value="${record.attendance.userName}"/></em>
-                    <span style="width:15%">
-                        <util:parseState mapName="TIMEMAP" state="${record.hour}"/>
-                    </span>
-                    <span style="width:15%">
-                        <util:parseDate value="${record.attendance.signInTime}" format="HH:mm"/>
-                    </span>
-                    <span style="width:15%">
-                        <util:parseDate value="${record.attendance.signOutTime}" format="HH:mm"/>
-                    </span>
-                    <span style="width:20%">
-                        <util:parseState mapName="SIGNINMAP" state="${record.attendance.onLateFlag}" defaultValue="未签" redKeys=""/>
-                    </span>
-                    <span style="width:20%">
-                        <util:parseState mapName="SIGNOUTMAP" state="${record.attendance.onEarlyFlag}" defaultValue="未签" redKeys=""/>
-                    </span>
-                </li>
-            </c:forEach>--%>
         </ul>
     </div>
 </div>
@@ -102,13 +81,13 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
-    $("#search").datetimepicker({
+    /*$("#search").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',
         autoclose: true,
         startView: 2,
         minView: 2,
-    });
+    });*/
     $(function () {
         $('.spantip').tooltip();
         $("#search").change(function () {

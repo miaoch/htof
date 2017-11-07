@@ -50,7 +50,7 @@ public class LoginControl {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String login(String name, HttpSession session, HttpServletRequest request) throws Exception {
+    public String login(HttpServletRequest request) throws Exception {
         request.setAttribute("error", "2");
         return "login";
     }

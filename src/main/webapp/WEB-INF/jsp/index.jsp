@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>采集人员管理平台业务系统</title>
+<title>旺克士外卖平台</title>
 <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
 <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${PATH}/css/main.css" />
