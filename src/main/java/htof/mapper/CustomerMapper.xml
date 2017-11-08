@@ -9,6 +9,19 @@
         <result property="lasttime" column="lasttime" jdbcType="BIGINT"/>
         <result property="count" column="count" jdbcType="BIGINT"/>
     </resultMap>
+    <sql id="where">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="phone != null and phone != 0">
+                and phone like concat('%', ${phone}, '%')
+            </if>
+            <if test="userId != null and userId != 0">
+                and userId = #{userId}
+            </if>
+            <if test="name != null and name != 0">
+                and name like concat('%', ${name}, '%')
+            </if>
+        </trim>
+    </sql>
     <insert id="saveOrUpdate" parameterType="htof.pojo.Customer">
         <selectKey keyProperty="count"  resultType="int" order="BEFORE">
             select count(*) from t_customer where phone = #{phone} and lasttime &lt; #{lasttime}
@@ -24,4 +37,8 @@
             ON DUPLICATE KEY update count = count + 1
         </if>
     </insert>
+    <select id="selectPageList" parameterType="htof.pojo.Customer" resultMap="customer">
+        SELECT * from t_customer
+        <include refid="where"/>
+    </select>
 </mapper>

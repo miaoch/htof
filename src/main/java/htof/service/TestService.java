@@ -38,8 +38,7 @@ public class TestService {
     @Autowired
     private ShopDao shopDao;
 
-    public void taskCycle() {
-        String beginDate="2017-01-01", endDate="2017-11-06";
+    public void taskCycle(String beginDate, String endDate) {
         OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());//每日由该接口重新生成session
         while (beginDate.compareTo(endDate) <= 0) {
             statistics(orderService, beginDate);
@@ -85,6 +84,7 @@ public class TestService {
                 OrderLog ol = new OrderLog();
                 ol.setOrderId(oOrder.getId());
                 ol.setShopId(oOrder.getShopId());
+                ol.setIncome(oOrder.getIncome());//毛利润
                 ol.setShopName(oOrder.getShopName());//商店名
                 ol.setCreatetime(oOrder.getCreatedAt().getTime());//下单时间
                 ol.setTotalPay(oOrder.getTotalPrice());//支付金额

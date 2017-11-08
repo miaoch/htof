@@ -2,11 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/basepath.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="util" uri="/WEB-INF/tlds/utiltag.tld" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>订单统计查阅</title>
+    <title>人员统计查阅</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -27,48 +28,48 @@
 <body>
 <div class="section">
     <h4>
-        订单统计查阅
+        人员统计查阅
         <p>
             <a href="#" onclick="export_excel();">
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
             </a>
         </p>
     </h4>
-    <form id="searchform" class="form-inline" role="form" action="orderLogList" method="get" style="margin: 5px 0px 0px 14px;">
+    <form id="searchform" class="form-inline" role="form" action="customerList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
-            <input type="text" class="form-control" id="search" name="orderId" value="${orderId }" placeholder="订单号">
+            <input type="text" class="form-control" id="search" name="phone" value="${phone }" placeholder="手机号">
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>
     <div class="table">
         <ul class="tableList tableList2">
             <li class="citytitle">
-                <em style="width:15%">店铺</em>
-                <span style="width:20%">订单号</span>
-                <span style="width:10%">消费金额</span>
-                <span style="width:15%">用户手机号</span>
-                <span style="width:20%">用户地址</span>
-                <span style="width:20%">用户姓名</span>
+                <em style="width:15%">手机号</em>
+                <span style="width:15%">姓名</span>
+                <span style="width:15%">地址</span>
+                <span style="width:15%">用户ID</span>
+                <span style="width:20%">最后一次购买时间</span>
+                <span style="width:20%">累积购买次数</span>
             </li>
             <c:forEach var="item" items="${list}">
                 <li>
                     <em style="width:15%">
-                        <c:out value="${item.shopName}"/>
+                        <c:out value="${item.phone}"/>
                     </em>
-                    <span style="width:20%">
-                        <c:out value="${item.orderId}"/>
+                    <span style="width:15%">
+                        <c:out value="${item.name}"/>
                     </span>
-                    <span style="width:10%">
-                        <c:out value="${item.totalPay}"/>
+                    <span title="${item.address}" style="width:15%">
+                        <c:out value="${item.address}"/>
                     </span>
                     <span style="width:15%">
-                        <c:out value="${item.customerPhone}"/>
-                    </span>
-                    <span style="width:20%" title="${item.customerAddress}">
-                        <c:out value="${item.customerAddress}"/>
+                        <c:out value="${item.userId}"/>
                     </span>
                     <span style="width:20%">
-                        <c:out value="${item.customerName}"/>
+                        <util:parseDate value="${item.lasttime}"/>
+                    </span>
+                    <span style="width:20%">
+                        <c:out value="${item.count}"/>
                     </span>
                 </li>
             </c:forEach>

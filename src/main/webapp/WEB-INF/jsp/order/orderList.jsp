@@ -2,11 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/basepath.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="util" uri="/WEB-INF/tlds/utiltag.tld" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>订单统计查阅</title>
+    <title>人员统计查阅</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -27,48 +29,53 @@
 <body>
 <div class="section">
     <h4>
-        订单统计查阅
+        订单详情
         <p>
-            <a href="#" onclick="export_excel();">
+            <%--<a href="#" onclick="export_excel();">
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
-            </a>
+            </a>--%>
         </p>
     </h4>
-    <form id="searchform" class="form-inline" role="form" action="orderLogList" method="get" style="margin: 5px 0px 0px 14px;">
+    <form id="searchform" class="form-inline" role="form" action="orderList" method="get" style="margin: 5px 0px 0px 14px;">
+        <input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
         <div class="form-group">
-            <input type="text" class="form-control" id="search" name="orderId" value="${orderId }" placeholder="订单号">
+            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期">
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>
     <div class="table">
         <ul class="tableList tableList2">
             <li class="citytitle">
-                <em style="width:15%">店铺</em>
                 <span style="width:20%">订单号</span>
-                <span style="width:10%">消费金额</span>
-                <span style="width:15%">用户手机号</span>
-                <span style="width:20%">用户地址</span>
-                <span style="width:20%">用户姓名</span>
+                <span style="width:8%">流水号</span>
+                <span style="width:7%">毛收入</span>
+                <span style="width:20%">下单时间</span>
+                <span style="width:10%">顾客姓名</span>
+                <span style="width:20%">顾客地址</span>
+                <span style="width:15%">订单状态</span>
             </li>
             <c:forEach var="item" items="${list}">
                 <li>
-                    <em style="width:15%">
-                        <c:out value="${item.shopName}"/>
-                    </em>
                     <span style="width:20%">
-                        <c:out value="${item.orderId}"/>
+                        <c:out value="${item.id}"/>
+                    </span>
+                    <span style="width:8%">
+                        <c:out value="${item.daySn}"/>
+                    </span>
+                    <span style="width:7%">
+                        <c:out value="${item.income}"/>
+                    </span>
+                    <span style="width:20%">
+                        <fmt:formatDate value="${item.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </span>
                     <span style="width:10%">
-                        <c:out value="${item.totalPay}"/>
+                        <c:out value="${item.consignee}"/>
+                    </span>
+                    <span title="${item.address}" style="width:20%">
+                        <c:out value="${item.address}"/>
                     </span>
                     <span style="width:15%">
-                        <c:out value="${item.customerPhone}"/>
-                    </span>
-                    <span style="width:20%" title="${item.customerAddress}">
-                        <c:out value="${item.customerAddress}"/>
-                    </span>
-                    <span style="width:20%">
-                        <c:out value="${item.customerName}"/>
+                        <util:parseState mapName="ORDERSTATUSMAP" state="${item.status}"/>
                     </span>
                 </li>
             </c:forEach>
@@ -81,36 +88,19 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
-    /*$("#search").datetimepicker({
+    $("#search").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',
         autoclose: true,
         startView: 2,
         minView: 2,
-    });*/
+    });
     $(function () {
         $('.spantip').tooltip();
         $("#search").change(function () {
             $("#searchform").submit();
         });
     });
-    function export_excel() {
-        $.ajax({
-            type: "POST",
-            url: "../util/exportJSKQExcel",
-            async: false,
-            success: function (result) {
-                if (result == "error") {
-                    $.messager.alert("错误", "导出失败,请联系开发人员！");
-                } else {
-                    var elemIF = document.createElement("iframe");
-                    elemIF.src = result;
-                    elemIF.style.display = "none";
-                    document.body.appendChild(elemIF);
-                }
-            },
-        });
-    }
 </script>
 </body>
 </html>

@@ -38,9 +38,10 @@ public class OrderTask {
     @Autowired
     private ShopDao shopDao;
 
-    @Scheduled(cron = "0 55 23 * * ? ") //每天23.55执行一次
+    @Scheduled(cron = "0 5 0 * * ? ") //每天0.5分统计昨天的数据执行一次
     public void taskCycle() {
         String date = DateUtil.date2String(new Date(), "yyyy-MM-dd");
+        date = DateUtil.StringDateAdd(date, -1);
         OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken(true));//每日由该接口重新生成session
         statistics(orderService, date);
     }
@@ -83,6 +84,7 @@ public class OrderTask {
                 OrderLog ol = new OrderLog();
                 ol.setOrderId(oOrder.getId());
                 ol.setShopId(oOrder.getShopId());
+                ol.setIncome(oOrder.getIncome());
                 ol.setShopName(oOrder.getShopName());//商店名
                 ol.setCreatetime(oOrder.getCreatedAt().getTime());//下单时间
                 ol.setTotalPay(oOrder.getTotalPrice());//支付金额

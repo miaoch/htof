@@ -52,10 +52,10 @@ public class TestControl {
         return "123";
     }
 
-    @RequestMapping(value = "/getDate")
+    @RequestMapping(value = "/initData")
     @ResponseBody
-    public String resetToken() {
-        testService.taskCycle();
+    public String initData(String beginDate, String endDate) {
+        testService.taskCycle(beginDate, endDate);
         return true + "";
     }
 }

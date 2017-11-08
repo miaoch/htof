@@ -219,10 +219,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/kqgl.png) no-repeat;
+	background: url(../images/sjdc_grey.png) no-repeat;
 }
 .module .m1:HOVER{
-	background: url(../images/kqgl2.png) no-repeat;
+	background: url(../images/sjdc_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m2{
@@ -230,10 +230,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/qjgl.png) no-repeat;
+	background: url(../images/ddjl_grey.png) no-repeat;
 }
 .module .m2:HOVER{
-	background: url(../images/qjgl2.png) no-repeat;
+	background: url(../images/ddjl_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m3{
@@ -241,10 +241,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/rygl.png) no-repeat;
+	background: url(../images/khxx_grey.png) no-repeat;
 }
 .module .m3:HOVER{
-	background: url(../images/rygl2.png) no-repeat;
+	background: url(../images/khxx_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m4{
@@ -252,10 +252,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/gzpb.png) no-repeat;
+	background: url(../images/dpgx_grey.png) no-repeat;
 }
 .module .m4:HOVER{
-	background: url(../images/gzpb2.png) no-repeat;
+	background: url(../images/dpgx_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m5{
@@ -263,10 +263,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/ssgk.png) no-repeat;
+	background: url(../images/sjtj_grey.png) no-repeat;
 }
 .module .m5:HOVER{
-	background: url(../images/ssgk2.png) no-repeat;
+	background: url(../images/sjtj_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m6{
@@ -274,10 +274,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/dtll.png) no-repeat;
+	background: url(../images/jqqd_grey.png) no-repeat;
 }
 .module .m6:HOVER{
-	background: url(../images/dtll2.png) no-repeat;
+	background: url(../images/jqqd_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m7{
@@ -285,10 +285,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/xxfb.png) no-repeat;
+	background: url(../images/jqqd_grey.png) no-repeat;
 }
 .module .m7:HOVER{
-	background: url(../images/xxfb2.png) no-repeat;
+	background: url(../images/jqqd_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m8{
@@ -296,10 +296,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/gzkh.png) no-repeat;
+	background: url(../images/jqqd_grey.png) no-repeat;
 }
 .module .m8:HOVER{
-	background: url(../images/gzkh2.png) no-repeat;
+	background: url(../images/jqqd_black.png) no-repeat;
 	cursor: pointer;
 }
 

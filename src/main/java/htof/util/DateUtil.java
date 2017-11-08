@@ -37,7 +37,7 @@ public class DateUtil {
     }
 
     public static String currentDay() {
-        return date2String(new Date(), "yyyy_MM_dd");
+        return date2String(new Date(), "yyyy-MM-dd");
     }
     public static String currentDayInSecond() {
         return date2String(new Date(), "yyyy_MM_dd HH:mm:ss");

@@ -24,6 +24,15 @@ public class OrderLog  implements Serializable {
     private String customerAddress;//顾客地址
     private long userId;//饿了么的userId套用
     private String orderId;//饿了么的订单套用
+    private double income;//毛利润
+
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
 
     public long getId() {
         return id;

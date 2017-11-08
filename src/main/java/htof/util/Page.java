@@ -19,6 +19,17 @@ public class Page {
     private String requestURI;
     private String pageString;
 
+    public Page(int curPage, int pageSize, int totalRecord, HttpServletRequest request) {
+        this.curPage = curPage;
+        this.pageSize = pageSize;
+        totalPage = totalRecord / pageSize + 1;
+        this.prePage = curPage > 1 ?  curPage - 1 : 1;
+        this.nextPage = curPage < totalPage ?  curPage + 1 : totalPage;
+        this.totalRecord = totalRecord;
+        setRequestURI(request);
+        setPageString();
+    }
+
     public Page(PageList pageList, HttpServletRequest request) {
         Paginator paginator = pageList.getPaginator();
         curPage = paginator.getPage();

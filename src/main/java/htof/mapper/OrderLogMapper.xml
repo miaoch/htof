@@ -19,6 +19,7 @@
         <result property="customerAddress" column="customerAddress" jdbcType="VARCHAR"/>
         <result property="userId" column="userId" jdbcType="BIGINT"/>
         <result property="orderId" column="orderId" jdbcType="VARCHAR"/>
+        <result property="income" column="income" jdbcType="DECIMAL"/>
     </resultMap>
     <sql id="where">
         <trim prefix="WHERE" prefixOverrides="AND | OR ">
@@ -48,9 +49,9 @@
     </select>
     <insert id="insert" parameterType="htof.pojo.OrderLog">
         insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
-                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress, userId, orderId)
+                          ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress, userId, orderId, income)
         VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee}
-        ,#{discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress}, #{userId}, #{orderId})
+        ,#{discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress}, #{userId}, #{orderId}, #{income})
     </insert>
     <!-- 分页查询回访记录 -->
     <select id="selectPageList" parameterType="htof.pojo.OrderLog" resultMap="orderlog">

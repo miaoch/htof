@@ -11,5 +11,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OrderLogDao extends BaseDao<OrderLog> {
-    PageList<OrderLog> selectPageList(OrderLog orderLog, PageBounds pb);
 }

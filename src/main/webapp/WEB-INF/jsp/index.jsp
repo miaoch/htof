@@ -22,8 +22,8 @@
 	</div>
 	<div class="content pubinfo">
 		<div class="module">
-			<div class="m1" onclick="window.open('export');">导出模块</div>
-			<div class="m2"></div>
+			<div class="m1" onclick="window.open('export');"></div>
+			<div class="m2" onclick="window.open('order');"></div>
 			<div class="m3"></div>
 			<div class="m4"></div>
 			<div class="m5"></div>

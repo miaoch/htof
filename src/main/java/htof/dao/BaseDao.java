@@ -1,5 +1,9 @@
 package htof.dao;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import htof.pojo.Customer;
+
 import java.util.List;
 
 /**
@@ -11,4 +15,5 @@ public interface BaseDao<T> {
     public List<T> select(T obj);
     public int delete(T obj);
     public int saveOrUpdate(T obj);
+    PageList<T> selectPageList(T obj, PageBounds pg);
 }
