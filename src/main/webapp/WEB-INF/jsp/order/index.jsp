@@ -53,7 +53,7 @@
 		<div class="aside" style="padding:0">
 			<div class="list-group" id="label">
 				<c:forEach var="shop" items="${shopList}">
-					<a href="order/orderList?shopId=${shop.id}" target="listFrame" class="list-group-item">
+					<a href="order/orderList?shopId=${shop.id}&shopName=${shop.name}" target="listFrame" class="list-group-item">
 						<i class="glyphicon glyphicon-th-list"></i>&nbsp;&nbsp;${shop.name}
 					</a>
 				</c:forEach>

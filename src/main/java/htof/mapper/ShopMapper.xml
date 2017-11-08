@@ -19,4 +19,9 @@
     <select id="selectAllShop" resultMap="shop">
         select * from t_shop
     </select>
+
+    <select id="getShopNameById" parameterType="long" resultType="string">
+        select name from t_shop
+        where id = #{id}
+    </select>
 </mapper>

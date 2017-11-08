@@ -49,6 +49,7 @@ public class OrderControl {
             e.printStackTrace();
         }
         model.addAttribute("shopId", shopId);
+        model.addAttribute("shopName", shopService.getShopNameById(shopId));
         model.addAttribute("date", date);
         model.addAttribute("list", list.getList());
         model.addAttribute("page", new Page(curPage, pageSize, list.getTotal() , request));

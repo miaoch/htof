@@ -18,4 +18,7 @@ public class ShopService {
     public List<Shop> selectAllShop() {
         return shopDao.selectAllShop();
     }
+    public String getShopNameById(long shopId) {
+        return shopDao.getShopNameById(shopId);
+    }
 }

@@ -29,7 +29,7 @@
 <body>
 <div class="section">
     <h4>
-        订单详情
+        ${shopName }---订单详情
         <p>
             <%--<a href="#" onclick="export_excel();">
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;

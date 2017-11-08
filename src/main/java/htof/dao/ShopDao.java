@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ShopDao extends BaseDao<Shop> {
     public List<Shop> selectAllShop();
+
+    public String getShopNameById(long shopId);
 }
