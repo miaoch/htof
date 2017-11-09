@@ -219,10 +219,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/sjdc_grey.png) no-repeat;
+	background: url(../images/sjxx_grey.png) no-repeat;
 }
 .module .m1:HOVER{
-	background: url(../images/sjdc_black.png) no-repeat;
+	background: url(../images/sjxx_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m2{
@@ -241,10 +241,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/khxx_grey.png) no-repeat;
+	background: url(../images/dpgl_grey.png) no-repeat;
 }
 .module .m3:HOVER{
-	background: url(../images/khxx_black.png) no-repeat;
+	background: url(../images/dpgl_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m4{
@@ -252,10 +252,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/dpgx_grey.png) no-repeat;
+	background: url(../images/plgl_grey.png) no-repeat;
 }
 .module .m4:HOVER{
-	background: url(../images/dpgx_black.png) no-repeat;
+	background: url(../images/plgl_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m5{
@@ -263,10 +263,10 @@ a {
 	height: 210px;
 	float: left;
 	margin-left: 10px;
-	background: url(../images/sjtj_grey.png) no-repeat;
+	background: url(../images/sjfx_grey.png) no-repeat;
 }
 .module .m5:HOVER{
-	background: url(../images/sjtj_black.png) no-repeat;
+	background: url(../images/sjfx_black.png) no-repeat;
 	cursor: pointer;
 }
 .module .m6{
