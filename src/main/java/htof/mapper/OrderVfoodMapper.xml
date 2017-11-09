@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.OrderVfoodDao" >
+    <resultMap id="orderVfood" type="htof.pojo.OrderVfood">
+        <id property="orderId" column="orderId" jdbcType="VARCHAR"/>
+        <id property="vfoodId" column="vfoodId" jdbcType="VARCHAR"/>
+        <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="htof.pojo.OrderVfood">
+        insert into t_order_vfood(orderId, vfoodId, quantity)
+        VALUES (#{orderId}, #{vfoodId}, #{quantity})
+    </insert>
+
+    <insert id="insertInBatch" parameterType="java.util.List">
+        insert into t_order_vfood(orderId, vfoodId, quantity)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.orderId},#{item.vfoodId},#{item.quantity})
+        </foreach>
+    </insert>
+</mapper>

@@ -16,4 +16,5 @@ public interface BaseDao<T> {
     public int delete(T obj);
     public int saveOrUpdate(T obj);
     PageList<T> selectPageList(T obj, PageBounds pg);
+    public int insertInBatch(List<T> obj);//批量插入
 }

@@ -30,7 +30,7 @@
 </head>
 <body>
 	<div class="wrap">
-		<div class="logtitle">旺克士外卖平台</div>
+		<div class="logtitle">涵哥小站</div>
 		<div class="login">
 			<h1>用户登入</h1>
 			<img alt="" src="images/apk.png" id="img">

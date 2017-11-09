@@ -7,9 +7,11 @@ import eleme.openapi.sdk.api.exception.UnauthorizedException;
 import eleme.openapi.sdk.api.service.OrderService;
 import htof.dao.CustomerDao;
 import htof.dao.OrderLogDao;
+import htof.dao.OrderVfoodDao;
 import htof.dao.ShopDao;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
+import htof.pojo.OrderVfood;
 import htof.pojo.Shop;
 import htof.util.ConfigUtil;
 import htof.util.DateUtil;
@@ -37,6 +39,8 @@ public class OrderTask {
     private OrderLogDao orderLogDao;
     @Autowired
     private ShopDao shopDao;
+    @Autowired
+    private OrderVfoodDao orderVfoodDao;
 
     @Scheduled(cron = "0 5 0 * * ? ") //每天0.5分统计昨天的数据执行一次
     public void taskCycle() {
@@ -79,6 +83,8 @@ public class OrderTask {
 
     public void statistics(OrderService orderService, String date) {
         List<OOrder> result = getAllOrdersByDate(orderService, date);
+        List<OrderVfood> oflist = new ArrayList<OrderVfood>();
+        List<OrderLog> ollist = new ArrayList<OrderLog>();
         if (result != null) {
             for (OOrder oOrder : result) {
                 OrderLog ol = new OrderLog();
@@ -135,6 +141,11 @@ public class OrderTask {
                                 for (OGoodsItem oGoodsItem : oGoodsItems) {
                                     orderDetails += oGoodsItem.getName() + ": " + oGoodsItem.getPrice() + "×" + oGoodsItem.getQuantity() + "\n";
                                     orderPrice += oGoodsItem.getTotal();
+                                    OrderVfood of = new OrderVfood();
+                                    of.setVfoodId(oGoodsItem.getVfoodId());
+                                    of.setOrderId(oOrder.getId());
+                                    of.setQuantity(oGoodsItem.getQuantity());
+                                    oflist.add(of);
                                 }
                                 if (orderDetails.length() > 0) {
                                     orderDetails = orderDetails.substring(0, orderDetails.length() - 1);
@@ -155,8 +166,12 @@ public class OrderTask {
                 ol.setOrderPrice(orderPrice);
                 ol.setLunchDetails(lunchDetails);
                 ol.setLunchFee(lunchFee);
-                orderLogDao.insert(ol);
+                ollist.add(ol);
             }
+            if (ollist.size() > 0)
+                orderLogDao.insertInBatch(ollist);
+            if (oflist.size() > 0)
+                orderVfoodDao.insertInBatch(oflist);
         }
     }
 }

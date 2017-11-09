@@ -7,9 +7,11 @@ import eleme.openapi.sdk.api.exception.UnauthorizedException;
 import eleme.openapi.sdk.api.service.OrderService;
 import htof.dao.CustomerDao;
 import htof.dao.OrderLogDao;
+import htof.dao.OrderVfoodDao;
 import htof.dao.ShopDao;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
+import htof.pojo.OrderVfood;
 import htof.pojo.Shop;
 import htof.util.ConfigUtil;
 import htof.util.DateUtil;
@@ -35,6 +37,8 @@ public class TestService {
     private CustomerDao customerDao;
     @Autowired
     private OrderLogDao orderLogDao;
+    @Autowired
+    private OrderVfoodDao orderVfoodDao;
     @Autowired
     private ShopDao shopDao;
 
@@ -79,6 +83,8 @@ public class TestService {
 
     public void statistics(OrderService orderService, String date) {
         List<OOrder> result = getAllOrdersByDate(orderService, date);
+        List<OrderVfood> oflist = new ArrayList<OrderVfood>();
+        List<OrderLog> ollist = new ArrayList<OrderLog>();
         if (result != null) {
             for (OOrder oOrder : result) {
                 OrderLog ol = new OrderLog();
@@ -93,18 +99,18 @@ public class TestService {
                 ol.setCustomerAddress(oOrder.getDeliveryPoiAddress());//顾客地址
                 ol.setCustomerPhone(StringUtil.list2String(oOrder.getPhoneList()));//顾客手机号
                 ol.setUserId(oOrder.getUserId());//顾客Id
-                Customer customer = new Customer();
-                customer.setAddress(ol.getCustomerAddress());
-                customer.setName(ol.getCustomerName());
-                customer.setLasttime(ol.getCreatetime());
-                customer.setUserId(oOrder.getUserId());
                 String regex = "^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\\d{8}$";
                 if (oOrder.getPhoneList() != null) {
                     for (String phone : oOrder.getPhoneList()) {
                         phone = phone.replaceAll("[^\\d]", "");
                         if (phone.matches(regex)) {
+                            Customer customer = new Customer();
+                            customer.setAddress(ol.getCustomerAddress());
+                            customer.setName(ol.getCustomerName());
+                            customer.setLasttime(ol.getCreatetime());
+                            customer.setUserId(oOrder.getUserId());
                             customer.setPhone(phone);
-                            customerDao.saveOrUpdate(customer);
+                            //customerDao.saveOrUpdate(customer);
                         }
                     }
                 }
@@ -135,6 +141,11 @@ public class TestService {
                                 for (OGoodsItem oGoodsItem : oGoodsItems) {
                                     orderDetails += oGoodsItem.getName() + ": " + oGoodsItem.getPrice() + "×" + oGoodsItem.getQuantity() + "\n";
                                     orderPrice += oGoodsItem.getTotal();
+                                    OrderVfood of = new OrderVfood();
+                                    of.setVfoodId(oGoodsItem.getVfoodId());
+                                    of.setOrderId(oOrder.getId());
+                                    of.setQuantity(oGoodsItem.getQuantity());
+                                    oflist.add(of);
                                 }
                                 if (orderDetails.length() > 0) {
                                     orderDetails = orderDetails.substring(0, orderDetails.length() - 1);
@@ -155,8 +166,12 @@ public class TestService {
                 ol.setOrderPrice(orderPrice);
                 ol.setLunchDetails(lunchDetails);
                 ol.setLunchFee(lunchFee);
-                orderLogDao.insert(ol);
+                ollist.add(ol);
+                //orderLogDao.insert(ol);
             }
+            //orderLogDao.insertInBatch(ollist);
+            if (oflist.size() > 0)
+            orderVfoodDao.insertInBatch(oflist);
         }
     }
 }
