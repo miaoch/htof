@@ -43,11 +43,18 @@ public class TestService {
     private ShopDao shopDao;
 
     public void taskCycle(String beginDate, String endDate) {
-        OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());//每日由该接口重新生成session
+        OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken(true));//每日由该接口重新生成session
         while (beginDate.compareTo(endDate) <= 0) {
             statistics(orderService, beginDate);
             beginDate = DateUtil.StringDateAdd(beginDate, 1);
         }
+    }
+
+    public void taskCycle() {
+        String date = DateUtil.date2String(new Date(), "yyyy-MM-dd");
+        date = DateUtil.StringDateAdd(date, -1);
+        OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken(true));//每日由该接口重新生成session
+        statistics(orderService, date);
     }
 
     /**
@@ -90,7 +97,7 @@ public class TestService {
                 OrderLog ol = new OrderLog();
                 ol.setOrderId(oOrder.getId());
                 ol.setShopId(oOrder.getShopId());
-                ol.setIncome(oOrder.getIncome());//毛利润
+                ol.setIncome(oOrder.getIncome());
                 ol.setShopName(oOrder.getShopName());//商店名
                 ol.setCreatetime(oOrder.getCreatedAt().getTime());//下单时间
                 ol.setTotalPay(oOrder.getTotalPrice());//支付金额
@@ -99,16 +106,16 @@ public class TestService {
                 ol.setCustomerAddress(oOrder.getDeliveryPoiAddress());//顾客地址
                 ol.setCustomerPhone(StringUtil.list2String(oOrder.getPhoneList()));//顾客手机号
                 ol.setUserId(oOrder.getUserId());//顾客Id
+                Customer customer = new Customer();
+                customer.setAddress(ol.getCustomerAddress());
+                customer.setName(ol.getCustomerName());
+                customer.setLasttime(ol.getCreatetime());
+                customer.setUserId(oOrder.getUserId());
                 String regex = "^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\\d{8}$";
                 if (oOrder.getPhoneList() != null) {
                     for (String phone : oOrder.getPhoneList()) {
                         phone = phone.replaceAll("[^\\d]", "");
                         if (phone.matches(regex)) {
-                            Customer customer = new Customer();
-                            customer.setAddress(ol.getCustomerAddress());
-                            customer.setName(ol.getCustomerName());
-                            customer.setLasttime(ol.getCreatetime());
-                            customer.setUserId(oOrder.getUserId());
                             customer.setPhone(phone);
                             //customerDao.saveOrUpdate(customer);
                         }
@@ -167,11 +174,11 @@ public class TestService {
                 ol.setLunchDetails(lunchDetails);
                 ol.setLunchFee(lunchFee);
                 ollist.add(ol);
-                //orderLogDao.insert(ol);
             }
-            //orderLogDao.insertInBatch(ollist);
+            if (ollist.size() > 0)
+                orderLogDao.insertInBatch(ollist);
             if (oflist.size() > 0)
-            orderVfoodDao.insertInBatch(oflist);
+                orderVfoodDao.insertInBatch(oflist);
         }
     }
 }

@@ -22,23 +22,28 @@
             </if>
         </trim>
     </sql>
+    <sql id="table">
+        t_customer
+    </sql>
     <insert id="saveOrUpdate" parameterType="htof.pojo.Customer">
         <selectKey keyProperty="count"  resultType="int" order="BEFORE">
-            select count(*) from t_customer where phone = #{phone} and lasttime &lt; #{lasttime}
+            select count(*) from
+            <include refid="table"/>
+            where phone = #{phone} and lasttime &lt; #{lasttime}
         </selectKey>
         <if test="count > 0">
-            update t_customer
+            update <include refid="table"/>
             set phone = #{phone}, name = #{name}, address = #{address},userId = #{userId},
               lasttime = #{lasttime}, count = count + 1
             where phone = #{phone}
         </if>
         <if test="count == 0">
-            insert into t_customer values(#{phone}, #{userId}, #{name}, #{address}, #{lasttime}, 1)
+            insert into <include refid="table"/> values(#{phone}, #{userId}, #{name}, #{address}, #{lasttime}, 1)
             ON DUPLICATE KEY update count = count + 1
         </if>
     </insert>
     <select id="selectPageList" parameterType="htof.pojo.Customer" resultMap="customer">
-        SELECT * from t_customer
+        SELECT * from <include refid="table"/>
         <include refid="where"/>
     </select>
 </mapper>

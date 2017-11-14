@@ -22,6 +22,6 @@
 
     <select id="getShopNameById" parameterType="long" resultType="string">
         select name from t_shop
-        where id = #{id}
+        where id = #{shopId}
     </select>
 </mapper>

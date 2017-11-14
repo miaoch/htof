@@ -55,7 +55,8 @@ public class TestControl {
     @RequestMapping(value = "/initData")
     @ResponseBody
     public String initData(String beginDate, String endDate) {
-        testService.taskCycle(beginDate, endDate);
+        //testService.taskCycle(beginDate, endDate);
+        testService.taskCycle();
         return true + "";
     }
 }
