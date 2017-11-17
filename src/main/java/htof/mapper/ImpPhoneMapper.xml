@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.ImpPhoneDao" >
+    <resultMap id="customer" type="htof.pojo.ImpPhone">
+        <id property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="where">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="phone != null and phone != 0">
+                and phone like concat('%', ${phone}, '%')
+            </if>
+        </trim>
+    </sql>
+    <sql id="table">
+        t_imp_phone
+    </sql>
+    <insert id="saveOrUpdate" parameterType="htof.pojo.ImpPhone">
+        insert into <include refid="table"/>(phone, name, address, count) values(#{phone}, #{name}, #{address}, 1)
+        ON DUPLICATE KEY update count = count + 1
+    </insert>
+</mapper>
