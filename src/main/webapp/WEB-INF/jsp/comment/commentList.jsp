@@ -2,12 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/basepath.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="util" uri="/WEB-INF/tlds/utiltag.tld" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>人员统计查阅</title>
+    <title>评论管理</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -28,50 +29,41 @@
 <body>
 <div class="section">
     <h4>
-        人员统计查阅
+        ${shopName }---订单详情
         <p>
-            <a href="#" onclick="export_excel()">
+            <%--<a href="#" onclick="export_excel();">
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
-            </a>
+            </a>--%>
         </p>
     </h4>
-    <form id="searchform" class="form-inline" role="form" action="customerList" method="get" style="margin: 5px 0px 0px 14px;">
+    <form id="searchform" class="form-inline" role="form" action="orderList" method="get" style="margin: 5px 0px 0px 14px;">
+        <input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
         <div class="form-group">
-            <input type="text" class="form-control" id="phone" name="phone" value="${phone }" placeholder="手机号">
-            <input type="text" class="form-control" id="date" name="date" value="${date }" placeholder="最后一次购买时间" readonly>
+            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期">
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>
     <div class="table">
         <ul class="tableList tableList2">
             <li class="citytitle">
-                <em style="width:15%">手机号</em>
-                <span style="width:15%">姓名</span>
-                <span style="width:15%">地址</span>
-                <span style="width:15%">用户ID</span>
-                <span style="width:20%">最后一次购买时间</span>
-                <span style="width:20%">累积购买次数</span>
+                <span style="width:60%">评价内容</span>
+                <span style="width:10%">评价分数</span>
+                <span style="width:30%">点评时间</span>
             </li>
             <c:forEach var="item" items="${list}">
                 <li>
-                    <em style="width:15%">
-                        <c:out value="${item.phone}"/>
-                    </em>
-                    <span style="width:15%">
-                        <c:out value="${item.name}"/>
+                    <span style="width:20%">
+                        <c:out value="${item.rateContent}"/>
                     </span>
-                    <span title="${item.address}" style="width:15%">
-                        <c:out value="${item.address}"/>
-                    </span>
-                    <span style="width:15%">
-                        <c:out value="${item.userId}"/>
+                    <span style="width:8%">
+                        <c:out value="${item.rating}"/>
                     </span>
                     <span style="width:20%">
-                        <util:parseDate value="${item.lasttime}"/>
+                        <fmt:formatDate value="${item.ratedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </span>
-                    <span style="width:20%">
-                        <c:out value="${item.count}"/>
-                    </span>
+                    <%--<span style="width:15%">
+                        <util:parseState mapName="ORDERSTATUSMAP" state="${item.status}"/>
+                    </span>--%>
                 </li>
             </c:forEach>
         </ul>
@@ -83,7 +75,7 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
-    $("#date").datetimepicker({
+    $("#search").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',
         autoclose: true,
@@ -92,10 +84,10 @@
     });
     $(function () {
         $('.spantip').tooltip();
+        $("#search").change(function () {
+            $("#searchform").submit();
+        });
     });
-    function export_excel() {
-        window.open("exportCustomerExcel?phone=${phone}&date=${date}");
-    }
 </script>
 </body>
 </html>

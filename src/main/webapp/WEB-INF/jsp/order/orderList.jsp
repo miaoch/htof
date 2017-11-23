@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>人员统计查阅</title>
+    <title>订单查阅</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@
     <form id="searchform" class="form-inline" role="form" action="orderList" method="get" style="margin: 5px 0px 0px 14px;">
         <input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
         <div class="form-group">
-            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期">
+            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期" readonly>
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>

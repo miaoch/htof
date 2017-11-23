@@ -8,10 +8,13 @@ import java.util.Date;
  * Created by miaoch on 2017/10/31.
  */
 public class DateUtil {
-    private static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String DEFAULT_SECOND = "yyyy-MM-dd HH:mm:ss";
+    private static final String DEFAULT_DAY = "yyyy-MM-dd";
+    private static final SimpleDateFormat DEFAULT_SECOND_SDF = new SimpleDateFormat(DEFAULT_SECOND);
+    private static final SimpleDateFormat DEFAULT_DAY_SDF = new SimpleDateFormat(DEFAULT_DAY);
 
     public static String date2String(Date date) {
-        return DEFAULT_SDF.format(date);
+        return DEFAULT_SECOND_SDF.format(date);
     }
 
     public static String date2String(Date date, String format) {
@@ -33,13 +36,23 @@ public class DateUtil {
     }
 
     public static String StringDateAdd(String dateStr, int day) {
-        return StringDateAdd(dateStr, "yyyy-MM-dd", day);
+        return StringDateAdd(dateStr, DEFAULT_DAY, day);
     }
 
     public static String currentDay() {
-        return date2String(new Date(), "yyyy-MM-dd");
+        return date2String(new Date(), DEFAULT_DAY);
     }
     public static String currentDayInSecond() {
-        return date2String(new Date(), "yyyy_MM_dd HH:mm:ss");
+        return date2String(new Date(), DEFAULT_SECOND);
     }
+
+    public static long getZeroLongtime(String time) {
+        try {
+            Date d =  DEFAULT_DAY_SDF.parse(time);
+            return d.getTime();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

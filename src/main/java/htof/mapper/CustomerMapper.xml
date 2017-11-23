@@ -14,6 +14,9 @@
             <if test="phone != null and phone != 0">
                 and phone like concat('%', ${phone}, '%')
             </if>
+            <if test="lasttime != null and lasttime != 0">
+                and lasttime >= #{lasttime}
+            </if>
             <if test="userId != null and userId != 0">
                 and userId = #{userId}
             </if>
@@ -43,6 +46,10 @@
         </if>
     </insert>
     <select id="selectPageList" parameterType="htof.pojo.Customer" resultMap="customer">
+        SELECT * from <include refid="table"/>
+        <include refid="where"/>
+    </select>
+    <select id="select" parameterType="htof.pojo.Customer" resultMap="customer">
         SELECT * from <include refid="table"/>
         <include refid="where"/>
     </select>

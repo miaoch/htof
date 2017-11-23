@@ -117,7 +117,7 @@ public class TestService {
                         phone = phone.replaceAll("[^\\d]", "");
                         if (phone.matches(regex)) {
                             customer.setPhone(phone);
-                            //customerDao.saveOrUpdate(customer);
+                            customerDao.saveOrUpdate(customer);
                         }
                     }
                 }

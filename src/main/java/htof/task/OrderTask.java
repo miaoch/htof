@@ -42,7 +42,7 @@ public class OrderTask {
     @Autowired
     private OrderVfoodDao orderVfoodDao;
 
-    @Scheduled(cron = "0 5 0 * * ? ") //每天0.5分统计昨天的数据执行一次
+    @Scheduled(cron = "0 0 6 * * ? ") //每天6.统计昨天的数据执行一次
     public void taskCycle() {
         String date = DateUtil.date2String(new Date(), "yyyy-MM-dd");
         date = DateUtil.StringDateAdd(date, -1);
