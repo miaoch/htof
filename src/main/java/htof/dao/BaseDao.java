@@ -2,7 +2,6 @@ package htof.dao;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import htof.pojo.Customer;
 
 import java.util.List;
 

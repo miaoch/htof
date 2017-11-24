@@ -21,40 +21,65 @@
         <result property="orderId" column="orderId" jdbcType="VARCHAR"/>
         <result property="income" column="income" jdbcType="DECIMAL"/>
     </resultMap>
+    <resultMap id="orderlogExport" type="htof.pojo.export.OrderLogExport">
+        <result property="shopName" column="shopName" jdbcType="VARCHAR"/>
+        <result property="orderTime" column="orderTime" jdbcType="VARCHAR"/>
+        <result property="orderDetails" column="orderDetails" jdbcType="VARCHAR"/>
+        <result property="orderPrice" column="orderPrice" jdbcType="DECIMAL"/>
+        <result property="lunchDetails" column="lunchDetails" jdbcType="VARCHAR"/>
+        <result property="lunchFee" column="lunchFee" jdbcType="DECIMAL"/>
+        <result property="discountDetails" column="discountDetails" jdbcType="VARCHAR"/>
+        <result property="discountPrice" column="discountPrice" jdbcType="DECIMAL"/>
+        <result property="deliverFee" column="deliverFee" jdbcType="DECIMAL"/>
+        <result property="totalPay" column="totalPay" jdbcType="DECIMAL"/>
+        <result property="customerPhone" column="customerPhone" jdbcType="VARCHAR"/>
+        <result property="customerName" column="customerName" jdbcType="VARCHAR"/>
+        <result property="customerAddress" column="customerAddress" jdbcType="VARCHAR"/>
+        <result property="income" column="income" jdbcType="DECIMAL"/>
+    </resultMap>
     <sql id="where">
         <trim prefix="WHERE" prefixOverrides="AND | OR ">
-            <if test="id != null and id != 0">
-                and id = #{id}
+            <if test="obj.id != null and obj.id != 0">
+                and id = #{obj.id}
             </if>
-            <if test="shopId != null and id != 0">
-                and shopId = #{shopId}
+            <if test="obj.shopId != null and obj.id != 0">
+                and shopId = #{obj.shopId}
             </if>
-            <if test="shopName != null">
-                and shopName = #{shopName}
+            <if test="obj.shopName != null">
+                and shopName = #{obj.shopName}
             </if>
-            <if test="customerPhone != null">
-                and customerPhone = #{customerPhone}
+            <if test="obj.customerPhone != null">
+                and customerPhone = #{obj.customerPhone}
             </if>
-            <if test="userId != null and id != 0">
-                and userId = #{userId}
+            <if test="obj.userId != null and obj.userId != 0">
+                and userId = #{obj.userId}
             </if>
-            <if test="orderId != null">
-                and orderId like concat('%', ${orderId}, '%')
+            <if test="obj.orderId != null">
+                and orderId like concat('%', ${obj.orderId}, '%')
+            </if>
+            <if test="starttime != null and starttime!=0">
+                and createtime &gt; #{starttime}
+            </if>
+            <if test="endtime != null and endtime!=0">
+                and createtime &lt; #{endtime}
             </if>
         </trim>
     </sql>
+    <sql id="table">
+        t_orderlog
+    </sql>
     <select id="select" parameterType="htof.pojo.OrderLog" resultMap="orderlog">
-        select * from t_orderlog
+        select * from <include refid="table"/>
         <include refid="where"/>
     </select>
     <insert id="insert" parameterType="htof.pojo.OrderLog">
-        insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
+        insert into <include refid="table"/>(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
                           ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress, userId, orderId, income)
         VALUES (#{shopId}, #{shopName}, #{createtime}, #{orderDetails}, #{orderPrice}, #{lunchDetails}, #{lunchFee}
         ,#{discountDetails}, #{discountPrice}, #{deliverFee}, #{totalPay}, #{customerPhone}, #{customerName}, #{customerAddress}, #{userId}, #{orderId}, #{income})
     </insert>
     <insert id="insertInBatch" parameterType="java.util.List">
-        insert into t_orderlog(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
+        insert into <include refid="table"/>(shopId, shopName, createtime, orderDetails, orderPrice, lunchDetails, lunchFee
         ,discountDetails, discountPrice, deliverFee, totalPay, customerPhone, customerName, customerAddress, userId, orderId, income)
         values
         <foreach collection="list" item="item" index="index" separator="," >
@@ -62,9 +87,30 @@
             ,#{item.discountDetails}, #{item.discountPrice}, #{item.deliverFee}, #{item.totalPay}, #{item.customerPhone}, #{item.customerName}, #{item.customerAddress}, #{item.userId}, #{item.orderId}, #{item.income})
         </foreach>
     </insert>
-    <!-- 分页查询回访记录 -->
-    <select id="selectPageList" parameterType="htof.pojo.OrderLog" resultMap="orderlog">
-        select * from t_orderlog
+    <!-- 分页查询订单记录 -->
+    <select id="selectPageList" resultMap="orderlog">
+        select * from <include refid="table"/>
+        <include refid="where"/>
+    </select>
+
+    <!-- 分页查询订单记录 -->
+    <select id="selectExport" resultMap="orderlogExport">
+        select
+            shopName,
+            FROM_UNIXTIME(createtime/1000, '%Y-%m-%d %H:%I:%i') orderTime,
+            orderDetails,
+            orderPrice,
+            lunchDetails,
+            lunchFee,
+            discountDetails,
+            discountPrice,
+            deliverFee,
+            totalPay,
+            customerPhone,
+            customerName,
+            customerAddress,
+            income
+        from <include refid="table"/>
         <include refid="where"/>
     </select>
 </mapper>

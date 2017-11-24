@@ -6,6 +6,7 @@ import htof.dao.CustomerDao;
 import htof.dao.OrderLogDao;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
+import htof.pojo.export.CustomerExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ public class CustomerService {
 
     public List<Customer> select(Customer ol) {
         return customerDao.select(ol);
+    }
+
+    public List<CustomerExport> selectExport(Customer ol) {
+        return customerDao.selectExport(ol);
     }
 
     public List<Customer> selectAll() {

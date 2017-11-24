@@ -36,7 +36,9 @@
     </h4>
     <form id="searchform" class="form-inline" role="form" action="orderLogList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
-            <input type="text" class="form-control" id="search" name="orderId" value="${orderId }" placeholder="订单号">
+            <input type="text" class="form-control" id="orderId" name="orderId" value="${orderId }" placeholder="订单号">
+            <input type="text" class="form-control" id="starttime" name="starttime" value="${starttime }" placeholder="开始时间" readonly>
+            <input type="text" class="form-control" id="endtime" name="endtime" value="${endtime }" placeholder="结束时间" readonly>
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>
@@ -81,35 +83,25 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
-    /*$("#search").datetimepicker({
+    $("#starttime").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',
         autoclose: true,
         startView: 2,
         minView: 2,
-    });*/
+    });
+    $("#endtime").datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        startView: 2,
+        minView: 2,
+    });
     $(function () {
         $('.spantip').tooltip();
-        $("#search").change(function () {
-            $("#searchform").submit();
-        });
     });
     function export_excel() {
-        $.ajax({
-            type: "POST",
-            url: "../util/exportJSKQExcel",
-            async: false,
-            success: function (result) {
-                if (result == "error") {
-                    $.messager.alert("错误", "导出失败,请联系开发人员！");
-                } else {
-                    var elemIF = document.createElement("iframe");
-                    elemIF.src = result;
-                    elemIF.style.display = "none";
-                    document.body.appendChild(elemIF);
-                }
-            },
-        });
+        window.open("exportOrderlogExcel?orderId=${orderId}&starttime=${starttime}&endtime=${endtime}");
     }
 </script>
 </body>

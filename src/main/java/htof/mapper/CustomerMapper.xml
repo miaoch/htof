@@ -9,6 +9,14 @@
         <result property="lasttime" column="lasttime" jdbcType="BIGINT"/>
         <result property="count" column="count" jdbcType="BIGINT"/>
     </resultMap>
+    <resultMap id="customerExport" type="htof.pojo.export.CustomerExport">
+        <id property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="lasttime" column="lasttime" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="BIGINT"/>
+    </resultMap>
     <sql id="where">
         <trim prefix="WHERE" prefixOverrides="AND | OR ">
             <if test="phone != null and phone != 0">
@@ -51,6 +59,12 @@
     </select>
     <select id="select" parameterType="htof.pojo.Customer" resultMap="customer">
         SELECT * from <include refid="table"/>
+        <include refid="where"/>
+    </select>
+    <select id="selectExport" parameterType="htof.pojo.Customer" resultMap="customerExport">
+        SELECT phone, userId, name, address,
+        count, FROM_UNIXTIME(lasttime/1000, '%Y-%m-%d %H:%I:%i') lasttime
+        from <include refid="table"/>
         <include refid="where"/>
     </select>
 </mapper>

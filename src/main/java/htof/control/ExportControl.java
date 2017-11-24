@@ -5,6 +5,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
+import htof.pojo.export.CustomerExport;
+import htof.pojo.export.OrderLogExport;
 import htof.service.CustomerService;
 import htof.service.OrderLogService;
 import htof.util.*;
@@ -49,11 +51,19 @@ public class ExportControl {
                                @RequestParam(value = "pageSize", defaultValue = Constants.PAGESIZE) Integer pageSize,
                                @RequestParam(value= "sort", defaultValue = "createtime.desc") String sortStr,
                                @RequestParam(value= "orderId", required = false) String orderId,
+                               @RequestParam(value= "starttime", required = false) String starttime,
+                               @RequestParam(value= "endtime", required = false) String endtime,
                                HttpServletRequest request, Model model) {
         PageBounds pb = new PageBounds(curPage, pageSize, Order.formString(sortStr));
         OrderLog params = new OrderLog();
         if (StringUtil.isNotEmpty(orderId)) params.setOrderId(orderId);
-        PageList<OrderLog> pageList= orderLogService.selectPageList(params, pb);
+        long startlongtime = 0L;
+        long endlongtime = 0L;
+        if (StringUtil.isNotEmpty(starttime)) startlongtime = DateUtil.getZeroLongtime(starttime);
+        if (StringUtil.isNotEmpty(endtime)) endlongtime = DateUtil.getZeroLongtime(endtime) + 24 * 3600 * 1000;
+        PageList<OrderLog> pageList= orderLogService.selectPageList(params, startlongtime, endlongtime, pb);
+        model.addAttribute("starttime", starttime);
+        model.addAttribute("endtime", endtime);
         model.addAttribute("orderId", orderId);
         model.addAttribute("list", pageList);
         model.addAttribute("page", new Page(pageList, request));
@@ -91,11 +101,36 @@ public class ExportControl {
         Customer params = new Customer();
         if (StringUtil.isNotEmpty(phone)) params.setPhone(phone);
         if (StringUtil.isNotEmpty(date)) params.setLasttime(DateUtil.getZeroLongtime(date));
-        List<Customer> list= customerService.select(params);
-        OutputStream os = null;
+        List<CustomerExport> list= customerService.selectExport(params);
         try{
-            os = response.getOutputStream();
-            ExcelUtil.write2os(list, os, "xls");
+            OutputStream os = response.getOutputStream();
+            ExcelUtil.write2os(list, CustomerExport.getTitle(), os, "xls");
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "exportOrderlogExcel", method = RequestMethod.GET)
+    public void exportOrderlogExcel(@RequestParam(value= "orderId", required = false) String orderId,
+                               @RequestParam(value= "starttime", required = false) String starttime,
+                               @RequestParam(value= "endtime", required = false) String endtime,
+                               HttpServletResponse response) throws IOException {
+        response.addHeader("pragma","NO-cache");
+        response.addHeader("Cache-Control","no-cache");
+        response.addDateHeader("Expries",0);
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.addHeader("Content-Disposition","attachment;filename=order.xls");
+        OrderLog params = new OrderLog();
+        if (StringUtil.isNotEmpty(orderId)) params.setOrderId(orderId);
+        long startlongtime = 0L;
+        long endlongtime = 0L;
+        if (StringUtil.isNotEmpty(starttime)) startlongtime = DateUtil.getZeroLongtime(starttime);
+        if (StringUtil.isNotEmpty(endtime)) endlongtime = DateUtil.getZeroLongtime(endtime) + 24 * 3600 * 1000;
+        List<OrderLogExport> list= orderLogService.selectExport(params, startlongtime, endlongtime);
+        try{
+            OutputStream os = response.getOutputStream();
+            ExcelUtil.write2os(list, OrderLogExport.getTitle(), os, "xls");
             os.flush();
         } catch (Exception e) {
             e.printStackTrace();

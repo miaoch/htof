@@ -5,6 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import htof.dao.OrderLogDao;
 import htof.pojo.OrderLog;
 import htof.pojo.User;
+import htof.pojo.export.OrderLogExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,12 @@ public class OrderLogService {
 
     public PageList<OrderLog> selectPageList(OrderLog orderLog, PageBounds pb) {
         return orderLogDao.selectPageList(orderLog, pb);
+    }
+    public PageList<OrderLog> selectPageList(OrderLog orderLog, long starttime, long endtime, PageBounds pb) {
+        return orderLogDao.selectPageList(orderLog, starttime, endtime, pb);
+    }
+
+    public List<OrderLogExport> selectExport(OrderLog params, long starttime, long endtime) {
+        return orderLogDao.selectExport(params, starttime, endtime);
     }
 }
