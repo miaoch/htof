@@ -127,7 +127,7 @@ public class ExportControl {
         long endlongtime = 0L;
         if (StringUtil.isNotEmpty(starttime)) startlongtime = DateUtil.getZeroLongtime(starttime);
         if (StringUtil.isNotEmpty(endtime)) endlongtime = DateUtil.getZeroLongtime(endtime) + 24 * 3600 * 1000;
-        List<OrderLogExport> list= orderLogService.selectExport(params, startlongtime, endlongtime);
+        List<OrderLogExport> list = orderLogService.selectExport(params, startlongtime, endlongtime);
         try{
             OutputStream os = response.getOutputStream();
             ExcelUtil.write2os(list, OrderLogExport.getTitle(), os, "xls");
