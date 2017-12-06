@@ -47,8 +47,7 @@ public class CommentControl {
         UgcService ugcService = new UgcService(ConfigUtil.getConfig(), ConfigUtil.getToken());
         List<OpenapiOrderRate> list = null;
         try {
-            list = ugcService.getOrderRatesByShopId(shopId.toString(), new Date(DateUtil.getZeroLongtime(date)),
-                    new Date(DateUtil.getZeroLongtime(enddate)), curPage, pageSize);
+            list = ugcService.getOrderRatesByShopId(shopId.toString(), date + "T00:00:00", enddate + "T00:00:00", curPage, pageSize);
         } catch (ServiceException e) {
             logger.error("ugcService.getOrderRatesByShopId调用失败" + e);
             e.printStackTrace();
