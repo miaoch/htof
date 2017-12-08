@@ -55,4 +55,33 @@ public class DateUtil {
         }
     }
 
+    public static int getCurrent(Unit unit) {
+        String dateStr = currentDayInSecond();//yyyy-MM-dd HH:mm:ss
+        if (unit == null) return -1;
+        switch (unit) {
+            default:
+                return -1;
+            case YEAR:
+                return Integer.parseInt(dateStr.substring(0, 4));
+            case MONTH:
+                return Integer.parseInt(dateStr.substring(5, 7));
+            case DAY:
+                return Integer.parseInt(dateStr.substring(8, 10));
+            case HOUR:
+                return Integer.parseInt(dateStr.substring(11, 13));
+            case MINUTE:
+                return Integer.parseInt(dateStr.substring(14, 16));
+            case SECOND:
+                return Integer.parseInt(dateStr.substring(17, 19));
+        }
+    }
+    public enum Unit {
+        YEAR,
+        MONTH,
+        DAY,
+        HOUR,
+        MINUTE,
+        SECOND
+    }
 }
+

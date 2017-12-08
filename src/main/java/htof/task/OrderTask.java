@@ -2,6 +2,7 @@ package htof.task;
 
 import eleme.openapi.sdk.api.entity.order.*;
 import eleme.openapi.sdk.api.enumeration.order.OOrderDetailGroupType;
+import eleme.openapi.sdk.api.exception.ServerErrorException;
 import eleme.openapi.sdk.api.exception.ServiceException;
 import eleme.openapi.sdk.api.exception.UnauthorizedException;
 import eleme.openapi.sdk.api.service.OrderService;
@@ -47,7 +48,21 @@ public class OrderTask {
         String date = DateUtil.date2String(new Date(), "yyyy-MM-dd");
         date = DateUtil.StringDateAdd(date, -1);
         OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken(true));//每日由该接口重新生成session
-        statistics(orderService, date);
+        try {
+            statistics(orderService, date);
+        } catch (Exception e) {
+            logger.error("接口重试...");
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Thread.sleep(10 * 60 * 1000);//10分钟后重试
+                        if (DateUtil.getCurrent(DateUtil.Unit.HOUR) < 10) taskCycle();//十点后不再重试
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }).start();
+        }
     }
 
     /**
@@ -73,8 +88,13 @@ public class OrderTask {
                 } catch (UnauthorizedException e) {
                     logger.error("统计token失效，重新获取..." + e);
                     ConfigUtil.getToken(true);
+                    throw new RuntimeException(e);
                 } catch (ServiceException e) {
                     logger.error("统计接口请求失败..." + e);
+                    throw new RuntimeException(e);
+                } catch (ServerErrorException e) {
+                    logger.error("服务异常，请重试..." + e);
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -82,7 +102,12 @@ public class OrderTask {
     }
 
     public void statistics(OrderService orderService, String date) {
-        List<OOrder> result = getAllOrdersByDate(orderService, date);
+        List<OOrder> result = null;
+        try {
+            result = getAllOrdersByDate(orderService, date);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         List<OrderVfood> oflist = new ArrayList<OrderVfood>();
         List<OrderLog> ollist = new ArrayList<OrderLog>();
         if (result != null) {

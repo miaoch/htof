@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>评论管理</title>
+    <title>菜品管理</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -29,11 +29,20 @@
 <body>
 <div class="section">
     <h4>
-        ${shopName }---评论查看
-        <p>
-            <%--<a href="#" onclick="export_excel();">
-                <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
-            </a>--%>
+        ${shopName }---菜品查看
+        <p class="sectionP">
+            <a href="#" id="info">
+                <i class="glyphicon glyphicon-bell"></i>&nbsp;查看店铺信息&nbsp;&nbsp;
+            </a>
+            <a href="#" id="add">
+                <i class="glyphicon glyphicon-bell"></i>&nbsp;增加&nbsp;&nbsp;
+            </a>
+            <a href="#" id="edit">
+                <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑&nbsp;&nbsp;
+            </a>
+            <a href="#" id="remove">
+                <i class="glyphicon glyphicon-remove"></i>&nbsp;删除&nbsp;&nbsp;
+            </a>
         </p>
     </h4>
     <form id="searchform" class="form-inline" role="form" action="commentList" method="get" style="margin: 5px 0px 0px 14px;">
@@ -75,11 +84,17 @@
     </div>
 </div>
 <%@include file="../common/pagination.jsp" %>
+<%@include file="../common/modalinfo.jsp" %>
 <script src="${PATH }/easyui/jquery.easyui.min.js"></script>
 <script src="${PATH }/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
+    $('#info').click(function() {
+        $("#detail").modal({
+            remote:"getShop?shopId=${shopId}"
+        });
+    });
     $("#search").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',

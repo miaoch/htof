@@ -24,7 +24,7 @@
 		<div class="module">
 			<div class="m1" onclick="window.open('export');"></div>
 			<div class="m2" onclick="window.open('order');"></div>
-			<div class="m3"></div>
+			<div class="m3" onclick="window.open('shop');"></div>
 			<div class="m4" onclick="window.open('comment');"></div>
 			<div class="m5"></div>
 			<div class="m6"></div>
