@@ -6,6 +6,7 @@ import eleme.openapi.sdk.api.service.OrderService;
 import htof.pojo.ImpPhone;
 import htof.service.ImpPhoneService;
 import htof.service.TestService;
+import htof.service.VfoodService;
 import htof.task.OrderTask;
 import htof.util.ConfigUtil;
 import org.json.JSONObject;
@@ -29,6 +30,9 @@ public class TestControl {
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private VfoodService vfoodService;
 
     @Autowired
     private ImpPhoneService impPhoneService;
@@ -66,6 +70,18 @@ public class TestControl {
         testService.taskCycle(beginDate, endDate);
         //testService.taskCycle();
         return true + "";
+    }
+
+    @RequestMapping(value = "/initFood")
+    @ResponseBody
+    public String initFood() {
+        try {
+            vfoodService.initVfood();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "false";
+        }
+        return "true";
     }
 
     @RequestMapping(value = "/import", method = RequestMethod.POST)

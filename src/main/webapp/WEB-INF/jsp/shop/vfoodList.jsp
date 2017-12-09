@@ -34,7 +34,7 @@
             <a href="#" id="info">
                 <i class="glyphicon glyphicon-bell"></i>&nbsp;查看店铺信息&nbsp;&nbsp;
             </a>
-            <a href="#" id="add">
+            <%--<a href="#" id="add">
                 <i class="glyphicon glyphicon-bell"></i>&nbsp;增加&nbsp;&nbsp;
             </a>
             <a href="#" id="edit">
@@ -42,42 +42,42 @@
             </a>
             <a href="#" id="remove">
                 <i class="glyphicon glyphicon-remove"></i>&nbsp;删除&nbsp;&nbsp;
-            </a>
+            </a>--%>
         </p>
     </h4>
     <form id="searchform" class="form-inline" role="form" action="commentList" method="get" style="margin: 5px 0px 0px 14px;">
-        <input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
+        <%--<input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
         <div class="form-group">
             <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期">
         </div>
-        <button type="submit" class="btn btn-default">搜&nbsp;索</button>
+        <button type="submit" class="btn btn-default">搜&nbsp;索</button>--%>
     </form>
     <div class="table">
         <ul class="tableList tableList2">
             <li class="citytitle">
-                <span style="width:60%">评价内容</span>
-                <span style="width:10%">评价分数</span>
-                <span style="width:30%">点评时间</span>
+                <span style="width:20%">分类名</span>
+                <span style="width:27%">菜品名</span>
+                <span style="width:37%">描述</span>
+                <span style="width:8%">标价</span>
+                <span style="width:8%">设置成本价</span>
             </li>
             <c:forEach var="item" items="${list}">
                 <li>
-                    <span style="width:60%">
-                        <c:if test="${empty item.rateContent}">
-                             暂无
-                        </c:if>
-                        <c:if test="${not empty item.rateContent}">
-                            <c:out value="${item.rateContent}"/>
-                        </c:if>
+                    <span style="width:20%">
+                        <c:out value="${item.categoryName}"/>
                     </span>
-                    <span style="width:10%">
-                        <c:out value="${item.rating}"/>
+                    <span style="width:27%">
+                        <c:out value="${item.name}"/>
                     </span>
-                    <span style="width:30%">
-                        <fmt:formatDate value="${item.ratedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                    <span style="width:37%" title="${item.description}">
+                        <c:out value="${item.description}"/>
                     </span>
-                    <%--<span style="width:15%">
-                        <util:parseState mapName="ORDERSTATUSMAP" state="${item.status}"/>
-                    </span>--%>
+                    <span style="width:8%">
+                        <c:out value="${item.costPrice}"/>
+                    </span>
+                    <span style="width:8%">
+                        <c:out value="${item.price}"/>
+                    </span>
                 </li>
             </c:forEach>
         </ul>

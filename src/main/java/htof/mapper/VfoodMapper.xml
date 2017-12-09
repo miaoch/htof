@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.VfoodDao" >
+    <resultMap id="vfood" type="htof.pojo.Vfood">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="shopId" column="shopId" jdbcType="BIGINT"/>
+        <result property="categoryId" column="categoryId" jdbcType="BIGINT"/>
+        <result property="categoryName" column="categoryName" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="costPrice" column="costPrice" jdbcType="DECIMAL"/>
+        <result property="wkscategoryId" column="wkscategoryId" jdbcType="BIGINT"/>
+        <result property="wkscategoryName" column="wkscategoryName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="table">
+        t_vfood
+    </sql>
+    <sql id="item">
+        id, shopId, categoryId, categoryName, name, description, price, costPrice, wkscategoryId, wkscategoryName
+    </sql>
+    <sql id="where">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="id != null and id != 0">
+                and id = #{id}
+            </if>
+            <if test="shopId != null and shopId != 0">
+                and shopId = #{shopId}
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                and categoryId = #{categoryId}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                and categoryName = #{categoryName}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="price != null and price != 0">
+                and price = #{price}
+            </if>
+            <if test="costPrice != null and costPrice != 0">
+                and costPrice = #{costPrice}
+            </if>
+            <if test="wkscategoryId != null and wkscategoryId != 0">
+                and wkscategoryId = #{wkscategoryId}
+            </if>
+            <if test="wkscategoryName != null and wkscategoryName != ''">
+                and wkscategoryName = #{wkscategoryName}
+            </if>
+        </trim>
+    </sql>
+    <insert id="insert" parameterType="htof.pojo.Vfood">
+        insert into <include refid="table"/>(<include refid="item"/>)
+        VALUES (#{id}, #{shopId}, #{categoryId}, #{categoryName},
+              #{name}, #{description}, #{price}, #{costPrice}, #{wkscategoryId}, #{wkscategoryName})
+        ON DUPLICATE KEY update
+        <trim suffixOverrides=",">
+            <if test="shopId != null and shopId != 0">
+                shopId = #{shopId},
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                categoryId = #{categoryId},
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                categoryName = #{categoryName},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="price != null and price != 0">
+                price = #{price},
+            </if>
+            <if test="costPrice != null and costPrice != 0">
+                costPrice = #{costPrice},
+            </if>
+            <if test="wkscategoryId != null and wkscategoryId != 0">
+                wkscategoryId = #{wkscategoryId},
+            </if>
+            <if test="wkscategoryName != null and wkscategoryName != ''">
+                wkscategoryName = #{wkscategoryName},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectPageList" parameterType="htof.pojo.Vfood" resultMap="vfood">
+        SELECT * from <include refid="table"/>
+        <include refid="where"/>
+    </select>
+</mapper>

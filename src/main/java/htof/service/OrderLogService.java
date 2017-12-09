@@ -2,6 +2,7 @@ package htof.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import htof.dao.BaseDao;
 import htof.dao.OrderLogDao;
 import htof.pojo.OrderLog;
 import htof.pojo.User;
@@ -15,21 +16,15 @@ import java.util.List;
  * Created by miaoch on 2017/11/3.
  */
 @Service("orderLogService")
-public class OrderLogService {
+public class OrderLogService extends BaseService<OrderLog> {
     @Autowired
     private OrderLogDao orderLogDao;
 
-    public List<OrderLog> select(OrderLog ol) {
-        return orderLogDao.select(ol);
+    @Override
+    BaseDao<OrderLog> getBaseDao() {
+        return orderLogDao;
     }
 
-    public List<OrderLog> selectAll() {
-        return orderLogDao.select(new OrderLog());
-    }
-
-    public PageList<OrderLog> selectPageList(OrderLog orderLog, PageBounds pb) {
-        return orderLogDao.selectPageList(orderLog, pb);
-    }
     public PageList<OrderLog> selectPageList(OrderLog orderLog, long starttime, long endtime, PageBounds pb) {
         return orderLogDao.selectPageList(orderLog, starttime, endtime, pb);
     }

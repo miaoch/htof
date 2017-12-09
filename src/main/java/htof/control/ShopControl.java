@@ -1,10 +1,18 @@
 package htof.control;
 
+import com.github.miemiedev.mybatis.paginator.domain.Order;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import eleme.openapi.sdk.api.entity.product.OCategory;
+import eleme.openapi.sdk.api.entity.product.OItem;
 import eleme.openapi.sdk.api.entity.shop.OShop;
 import eleme.openapi.sdk.api.entity.ugc.OpenapiOrderRate;
 import eleme.openapi.sdk.api.exception.ServiceException;
+import eleme.openapi.sdk.api.service.ProductService;
 import eleme.openapi.sdk.api.service.UgcService;
+import htof.pojo.Vfood;
 import htof.service.ShopService;
+import htof.service.VfoodService;
 import htof.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by miaoch on 2017/11/23.
@@ -27,6 +36,9 @@ public class ShopControl {
     private static Logger logger = LoggerFactory.getLogger("ShopControl");
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private VfoodService vfoodService;
 
     @RequestMapping
     public String index(Model model) {
@@ -49,9 +61,19 @@ public class ShopControl {
     }
 
     @RequestMapping(value = "vfoodList", method = RequestMethod.GET)
-    public String vfoodList(@RequestParam(value= "shopId") Long shopId, Model model) {
+    public String vfoodList(@RequestParam(value = "curPage", defaultValue = Constants.CURPAGE) Integer curPage,
+                            @RequestParam(value = "pageSize", defaultValue = Constants.PAGESIZE) Integer pageSize,
+                            @RequestParam(value= "sort", defaultValue = "categoryId,id") String sortStr,
+                            @RequestParam(value= "shopId") Long shopId,
+                            HttpServletRequest request, Model model) {
+        PageBounds pb = new PageBounds(curPage, pageSize, Order.formString(sortStr));
+        Vfood param = new Vfood();
+        param.setShopId(shopId);
+        PageList<Vfood> pageList = vfoodService.selectPageList(param, pb);
         model.addAttribute("shopId", shopId);
-        //TODO
+        model.addAttribute("shopName", shopService.getShopNameById(shopId));
+        model.addAttribute("list", pageList);
+        model.addAttribute("page", new Page(pageList, request));
         return "/shop/vfoodList";
     }
 }

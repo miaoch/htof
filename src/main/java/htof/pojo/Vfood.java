@@ -6,10 +6,14 @@ package htof.pojo;
 public class Vfood {
     private long id;
     private long shopId;
+    private long categoryId;//饿了么分类Id
+    private String categoryName;//饿了么分类名字
     private String name;
+    private String description;
     private double price;//售价
     private double costPrice;//成本价
-    private double category;//商品类别，分析数据用，待用
+    private long wkscategoryId;//内部商品类别，分析数据用，待用
+    private String wkscategoryName;//内部商品类别，分析数据用，待用
 
     public long getId() {
         return id;
@@ -51,11 +55,43 @@ public class Vfood {
         this.costPrice = costPrice;
     }
 
-    public double getCategory() {
-        return category;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(double category) {
-        this.category = category;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public long getWkscategoryId() {
+        return wkscategoryId;
+    }
+
+    public void setWkscategoryId(long wkscategoryId) {
+        this.wkscategoryId = wkscategoryId;
+    }
+
+    public String getWkscategoryName() {
+        return wkscategoryName;
+    }
+
+    public void setWkscategoryName(String wkscategoryName) {
+        this.wkscategoryName = wkscategoryName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

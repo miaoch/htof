@@ -61,7 +61,7 @@ public class ExportControl {
         long endlongtime = 0L;
         if (StringUtil.isNotEmpty(starttime)) startlongtime = DateUtil.getZeroLongtime(starttime);
         if (StringUtil.isNotEmpty(endtime)) endlongtime = DateUtil.getZeroLongtime(endtime) + 24 * 3600 * 1000;
-        PageList<OrderLog> pageList= orderLogService.selectPageList(params, startlongtime, endlongtime, pb);
+        PageList<OrderLog> pageList = orderLogService.selectPageList(params, startlongtime, endlongtime, pb);
         model.addAttribute("starttime", starttime);
         model.addAttribute("endtime", endtime);
         model.addAttribute("orderId", orderId);
