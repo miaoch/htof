@@ -53,6 +53,37 @@
             </if>
         </trim>
     </sql>
+    <sql id="set">
+        <trim prefix="set" suffixOverrides=",">
+            <if test="shopId != null and shopId != 0">
+                shopId = #{shopId},
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                categoryId = #{categoryId},
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                categoryName = #{categoryName},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="price != null and price != 0">
+                price = #{price},
+            </if>
+            <if test="costPrice != null and costPrice != 0">
+                costPrice = #{costPrice},
+            </if>
+            <if test="wkscategoryId != null and wkscategoryId != 0">
+                wkscategoryId = #{wkscategoryId},
+            </if>
+            <if test="wkscategoryName != null and wkscategoryName != ''">
+                wkscategoryName = #{wkscategoryName},
+            </if>
+        </trim>
+    </sql>
     <insert id="insert" parameterType="htof.pojo.Vfood">
         insert into <include refid="table"/>(<include refid="item"/>)
         VALUES (#{id}, #{shopId}, #{categoryId}, #{categoryName},
@@ -93,4 +124,15 @@
         SELECT * from <include refid="table"/>
         <include refid="where"/>
     </select>
+
+    <select id="select" parameterType="htof.pojo.Vfood" resultMap="vfood">
+        SELECT * from <include refid="table"/>
+        <include refid="where"/>
+    </select>
+
+    <update id="update" parameterType="htof.pojo.Vfood">
+        update <include refid="table"/>
+        <include refid="set"/>
+        where id = #{id}
+    </update>
 </mapper>

@@ -5,10 +5,14 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import htof.pojo.Customer;
 import htof.pojo.OrderLog;
+import htof.pojo.StatisticsVfood;
 import htof.pojo.export.CustomerExport;
 import htof.pojo.export.OrderLogExport;
+import htof.pojo.export.StatisticsVfoodExport;
 import htof.service.CustomerService;
 import htof.service.OrderLogService;
+import htof.service.ShopService;
+import htof.service.StatisticsVfoodService;
 import htof.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by miaoch on 2017/11/4.
@@ -39,7 +45,13 @@ public class ExportControl {
     private OrderLogService orderLogService;
 
     @Autowired
+    private StatisticsVfoodService statisticsVfoodService;
+
+    @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private ShopService shopService;
 
     @RequestMapping
     public String index() {
@@ -131,6 +143,75 @@ public class ExportControl {
         try{
             OutputStream os = response.getOutputStream();
             ExcelUtil.write2os(list, OrderLogExport.getTitle(), os, "xls");
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "statisticsVfoodList", method = RequestMethod.GET)
+    public String statisticsVfoodList(@RequestParam(value = "curPage", defaultValue = Constants.CURPAGE) Integer curPage,
+                                      @RequestParam(value = "pageSize", defaultValue = Constants.PAGESIZE) Integer pageSize,
+                                      @RequestParam(value= "sort", defaultValue = "count.desc") String sortStr,
+                                      @RequestParam(value= "beginDate", required = false) String beginDate,
+                                      @RequestParam(value= "endDate", required = false) String endDate,
+                                      @RequestParam(value= "shopId", required = false) Long shopId,
+                                      HttpServletRequest request, Model model) {
+        PageBounds pb = new PageBounds(curPage, pageSize, Order.formString(sortStr));
+        Map params = new HashMap();
+        if (StringUtil.isEmpty(beginDate) && StringUtil.isEmpty(endDate)) {
+            beginDate = DateUtil.currentDay();
+        }//如果都为空，设个默认值
+        if (StringUtil.isNotEmpty(beginDate)) {
+            long beginLongtime = DateUtil.getZeroLongtime(beginDate);
+            params.put("beginLongtime", beginLongtime);
+        }
+        if (StringUtil.isNotEmpty(endDate)) {
+            long endLongtime = DateUtil.getZeroLongtime(endDate);
+            params.put("endLongtime", endLongtime + 24L * 3600 * 1000);
+        }
+        if (shopId != null && shopId != 0) {
+            params.put("shopId", shopId);
+        }
+        PageList<StatisticsVfood> pageList= statisticsVfoodService.selectPageListByMap(params, pb);
+        model.addAttribute("beginDate", beginDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("shopId", shopId);
+        model.addAttribute("list", pageList);
+        model.addAttribute("shopList", shopService.selectAllShop());
+        model.addAttribute("page", new Page(pageList, request));
+        return "/export/statisticsVfoodList";
+    }
+
+    @RequestMapping(value = "exportStatisticsVfoodExcel", method = RequestMethod.GET)
+    public void exportStatisticsVfoodExcel(@RequestParam(value= "beginDate", required = false) String beginDate,
+                                            @RequestParam(value= "endDate", required = false) String endDate,
+                                            @RequestParam(value= "shopId", required = false) Long shopId,
+                                            HttpServletResponse response) throws IOException {
+        response.addHeader("pragma","NO-cache");
+        response.addHeader("Cache-Control","no-cache");
+        response.addDateHeader("Expries",0);
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        if (StringUtil.isEmpty(beginDate) && StringUtil.isEmpty(endDate)) {
+            beginDate = DateUtil.currentDay();
+        }//如果都为空，设个默认值
+        response.addHeader("Content-Disposition","attachment;filename="+beginDate+"~"+endDate+".xls");
+        Map params = new HashMap();
+        if (StringUtil.isNotEmpty(beginDate)) {
+            long beginLongtime = DateUtil.getZeroLongtime(beginDate);
+            params.put("beginLongtime", beginLongtime);
+        }
+        if (StringUtil.isNotEmpty(endDate)) {
+            long endLongtime = DateUtil.getZeroLongtime(endDate);
+            params.put("endLongtime", endLongtime + 24L * 3600 * 1000);
+        }
+        if (shopId != null && shopId != 0) {
+            params.put("shopId", shopId);
+        }
+        List<StatisticsVfoodExport> list= statisticsVfoodService.selectExportByMap(params);
+        try{
+            OutputStream os = response.getOutputStream();
+            ExcelUtil.write2os(list, StatisticsVfoodExport.getTitle(), os, "xls");
             os.flush();
         } catch (Exception e) {
             e.printStackTrace();

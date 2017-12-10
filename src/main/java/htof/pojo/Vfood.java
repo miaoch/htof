@@ -15,6 +15,11 @@ public class Vfood {
     private long wkscategoryId;//内部商品类别，分析数据用，待用
     private String wkscategoryName;//内部商品类别，分析数据用，待用
 
+    public Vfood(long id) {
+        this.id = id;
+    }
+    public Vfood() {}
+
     public long getId() {
         return id;
     }

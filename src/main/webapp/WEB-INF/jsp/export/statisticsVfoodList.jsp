@@ -2,13 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/basepath.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="util" uri="/WEB-INF/tlds/utiltag.tld" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>评论管理</title>
+    <title>成本核算</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -29,46 +28,49 @@
 <body>
 <div class="section">
     <h4>
-        ${shopName }---评论查看
+        人员统计查阅
         <p>
-            <%--<a href="#" onclick="export_excel();">
+            <a href="#" onclick="export_excel()">
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
-            </a>--%>
+            </a>
         </p>
     </h4>
-    <form id="searchform" class="form-inline" role="form" action="commentList" method="get" style="margin: 5px 0px 0px 14px;">
-        <input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
+    <form id="searchform" class="form-inline" role="form" action="statisticsVfoodList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
-            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期">
+            <select class="form-control" id="shopId" name="shopId" >
+                <option value="">所有</option>
+                <c:forEach var="shop" items="${shopList}">
+                    <option value="${shop.id}"
+                            <c:if test='${shop.id == shopId}'>selected="selected"</c:if>>${shop.name}</option>
+                </c:forEach>
+            </select>
+            <input type="text" class="form-control" id="beginDate" name="beginDate" value="${beginDate }" placeholder="开始时间" readonly>
+            <input type="text" class="form-control" id="endDate" name="endDate" value="${endDate }" placeholder="结束时间" readonly>
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
     </form>
     <div class="table">
         <ul class="tableList tableList2">
             <li class="citytitle">
-                <span style="width:60%">评价内容</span>
-                <span style="width:10%">评价分数</span>
-                <span style="width:30%">点评时间</span>
+                <em style="width:25%">店铺名</em>
+                <span style="width:25%">菜品名</span>
+                <span style="width:25%">数量</span>
+                <span style="width:25%">价值</span>
             </li>
             <c:forEach var="item" items="${list}">
                 <li>
-                    <span style="width:60%">
-                        <c:if test="${empty item.rateContent}">
-                             暂无
-                        </c:if>
-                        <c:if test="${not empty item.rateContent}">
-                            <c:out value="${item.rateContent}"/>
-                        </c:if>
+                    <em style="width:25%">
+                        <c:out value="${item.shopName}"/>
+                    </em>
+                    <span style="width:25%">
+                        <c:out value="${item.vfoodName}"/>
                     </span>
-                    <span style="width:10%">
-                        <c:out value="${item.rating}"/>
+                    <span style="width:25%">
+                        <c:out value="${item.count}"/>
                     </span>
-                    <span style="width:30%">
-                        <fmt:formatDate value="${item.ratedAt}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                    <span style="width:25%">
+                        <c:out value="${item.price}"/>
                     </span>
-                    <%--<span style="width:15%">
-                        <util:parseState mapName="ORDERSTATUSMAP" state="${item.status}"/>
-                    </span>--%>
                 </li>
             </c:forEach>
         </ul>
@@ -80,7 +82,14 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
-    $("#search").datetimepicker({
+    $("#beginDate").datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        startView: 2,
+        minView: 2,
+    });
+    $("#endDate").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',
         autoclose: true,
@@ -89,10 +98,10 @@
     });
     $(function () {
         $('.spantip').tooltip();
-        $("#search").change(function () {
-            $("#searchform").submit();
-        });
     });
+    function export_excel() {
+        window.open("exportStatisticsVfoodExcel?beginDate=${beginDate}&endDate=${endDate}&shopId=${shopId}");
+    }
 </script>
 </body>
 </html>

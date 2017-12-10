@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="htof.dao.StatisticsVfoodDao" >
+    <resultMap id="statisticsVfood" type="htof.pojo.StatisticsVfood">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <id property="date" column="date" jdbcType="VARCHAR"/>
+        <result property="shopId" column="shopId" jdbcType="BIGINT"/>
+        <result property="shopName" column="shopName" jdbcType="VARCHAR"/>
+        <result property="vfoodId" column="vfoodId" jdbcType="BIGINT"/>
+        <result property="vfoodName" column="vfoodName" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="BIGINT"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectPageListByMap" parameterType="java.util.Map" resultMap="statisticsVfood">
+        (select log.shopId, log.shopName,
+           sum(ov.quantity) count, vf.id vfoodId, vf.`name` vfoodName,
+           vf.price * sum(ov.quantity) price from t_orderlog log
+        LEFT JOIN t_order_vfood ov on log.orderId = ov.orderId
+        inner JOIN t_vfood vf on ov.vfoodId = vf.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="beginLongtime != null">
+                and log.createtime &gt; #{beginLongtime}
+            </if>
+            <if test="endLongtime != null">
+                and log.createtime &lt; #{endLongtime}
+            </if>
+            <if test="shopId != null">
+                and log.shopId = #{shopId}
+            </if>
+        </trim>
+        group by log.shopId, ov.vfoodId)
+        UNION
+        (select log.shopId, log.shopName,
+        sum(ov.quantity) count, '-1' vfoodId, '总计' vfoodName,
+        sum(log.income) price from t_orderlog log
+        LEFT JOIN t_order_vfood ov on log.orderId = ov.orderId
+        inner JOIN t_vfood vf on ov.vfoodId = vf.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="beginLongtime != null">
+                and log.createtime &gt; #{beginLongtime}
+            </if>
+            <if test="endLongtime != null">
+                and log.createtime &lt; #{endLongtime}
+            </if>
+            <if test="shopId != null">
+                and log.shopId = #{shopId}
+            </if>
+        </trim>
+        group by log.shopId)
+    </select>
+
+    <select id="selectExportByMap" parameterType="java.util.Map" resultType="htof.pojo.export.StatisticsVfoodExport">
+        (select log.shopName,
+           sum(ov.quantity) count, vf.`name` vfoodName,
+           vf.price * sum(ov.quantity) price from t_orderlog log
+        LEFT JOIN t_order_vfood ov on log.orderId = ov.orderId
+        inner JOIN t_vfood vf on ov.vfoodId = vf.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="beginLongtime != null">
+                and log.createtime &gt; #{beginLongtime}
+            </if>
+            <if test="endLongtime != null">
+                and log.createtime &lt; #{endLongtime}
+            </if>
+            <if test="shopId != null">
+                and log.shopId = #{shopId}
+            </if>
+        </trim>
+        group by log.shopId, ov.vfoodId)
+        UNION
+        (select log.shopName,
+        sum(ov.quantity) count, '总计' vfoodName,
+        sum(log.income) price from t_orderlog log
+        LEFT JOIN t_order_vfood ov on log.orderId = ov.orderId
+        inner JOIN t_vfood vf on ov.vfoodId = vf.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="beginLongtime != null">
+                and log.createtime &gt; #{beginLongtime}
+            </if>
+            <if test="endLongtime != null">
+                and log.createtime &lt; #{endLongtime}
+            </if>
+            <if test="shopId != null">
+                and log.shopId = #{shopId}
+            </if>
+        </trim>
+        group by log.shopId)
+        order by count desc
+    </select>
+</mapper>

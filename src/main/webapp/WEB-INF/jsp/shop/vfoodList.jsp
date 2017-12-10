@@ -32,12 +32,12 @@
         ${shopName }---菜品查看
         <p class="sectionP">
             <a href="#" id="info">
-                <i class="glyphicon glyphicon-bell"></i>&nbsp;查看店铺信息&nbsp;&nbsp;
+                <i class="glyphicon glyphicon-search"></i>&nbsp;查看店铺信息&nbsp;&nbsp;
             </a>
-            <%--<a href="#" id="add">
-                <i class="glyphicon glyphicon-bell"></i>&nbsp;增加&nbsp;&nbsp;
+            <a href="#" id="setPrice">
+                <i class="glyphicon glyphicon-pencil"></i>&nbsp;设置成本价&nbsp;&nbsp;
             </a>
-            <a href="#" id="edit">
+            <%--<a href="#" id="edit">
                 <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑&nbsp;&nbsp;
             </a>
             <a href="#" id="remove">
@@ -46,11 +46,6 @@
         </p>
     </h4>
     <form id="searchform" class="form-inline" role="form" action="commentList" method="get" style="margin: 5px 0px 0px 14px;">
-        <%--<input type="text" name="shopId" value="${shopId }" placeholder="店铺ID" hidden>
-        <div class="form-group">
-            <input type="text" class="form-control" id="search" name="date" value="${date }" placeholder="日期">
-        </div>
-        <button type="submit" class="btn btn-default">搜&nbsp;索</button>--%>
     </form>
     <div class="table">
         <ul class="tableList tableList2">
@@ -62,7 +57,7 @@
                 <span style="width:8%">设置成本价</span>
             </li>
             <c:forEach var="item" items="${list}">
-                <li>
+                <li onclick="vid = '${item.id}';" ondblclick="$('#setPrice').click();">
                     <span style="width:20%">
                         <c:out value="${item.categoryName}"/>
                     </span>
@@ -90,9 +85,19 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
+    var vid;
     $('#info').click(function() {
         $("#detail").modal({
             remote:"getShop?shopId=${shopId}"
+        });
+    });
+    $('#setPrice').click(function() {
+        if(vid == undefined){
+            swal("请选择一条记录！");
+            return;
+        }
+        $("#detail").modal({
+            remote:"setPrice?vfoodId="+vid+"&shopId=${shopId}&curPage=${page.curPage}&pageSize=${page.pageSize}"
         });
     });
     $("#search").datetimepicker({

@@ -20,6 +20,10 @@ public abstract class BaseService<T> {
     public List<T> select(T obj) {
         return getBaseDao().select(obj);
     }
+    public T selectOne(T obj) {
+        List<T> list = getBaseDao().select(obj);
+        return list == null || list.isEmpty() ? null : list.get(0);
+    }
     public List<T> selectAll() {
         return getBaseDao().select(null);
     }

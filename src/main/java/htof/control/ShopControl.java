@@ -60,6 +60,32 @@ public class ShopControl {
         return "/shop/shopInfo";
     }
 
+    @RequestMapping(value = "setPrice", method = RequestMethod.GET)
+    public String setPrice(@RequestParam(value= "vfoodId") Long vfoodId,
+                           @RequestParam(value= "shopId") Long shopId,
+                           @RequestParam(value = "curPage", defaultValue = Constants.CURPAGE) Integer curPage,
+                           @RequestParam(value = "pageSize", defaultValue = Constants.PAGESIZE) Integer pageSize,
+                          Model model) {
+        model.addAttribute("vfood", vfoodService.selectOne(new Vfood(vfoodId)));
+        model.addAttribute("shopId", shopId);
+        model.addAttribute("curPage", curPage);
+        model.addAttribute("pageSize", pageSize);
+        return "/shop/setPrice";
+    }
+
+    @RequestMapping(value = "setPrice", method = RequestMethod.POST)
+    public String setPrice(@RequestParam(value= "vfoodId") Long vfoodId,
+                           @RequestParam(value= "shopId") Long shopId,
+                           @RequestParam(value = "curPage", defaultValue = Constants.CURPAGE) Integer curPage,
+                           @RequestParam(value = "pageSize", defaultValue = Constants.PAGESIZE) Integer pageSize,
+                           @RequestParam(value= "price",required = true) Double price) {
+        Vfood food = new Vfood();
+        food.setId(vfoodId);
+        food.setPrice(price);
+        vfoodService.update(food);
+        return "redirect:vfoodList?curPage=" + curPage + "&pageSize=" + pageSize + "&shopId=" + shopId;
+    }
+
     @RequestMapping(value = "vfoodList", method = RequestMethod.GET)
     public String vfoodList(@RequestParam(value = "curPage", defaultValue = Constants.CURPAGE) Integer curPage,
                             @RequestParam(value = "pageSize", defaultValue = Constants.PAGESIZE) Integer pageSize,

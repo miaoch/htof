@@ -58,6 +58,9 @@
 				<a href="export/customerList" target="listFrame" class="list-group-item">
 					<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;人员统计查阅
 				</a>
+				<a href="export/statisticsVfoodList" target="listFrame" class="list-group-item">
+					<i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;按天成本核算
+				</a>
 			</div>
 		</div>
 		<div class="section">

@@ -5,6 +5,7 @@ import eleme.openapi.sdk.api.exception.ServiceException;
 import eleme.openapi.sdk.api.service.OrderService;
 import htof.pojo.ImpPhone;
 import htof.service.ImpPhoneService;
+import htof.service.StatisticsVfoodService;
 import htof.service.TestService;
 import htof.service.VfoodService;
 import htof.task.OrderTask;
@@ -33,6 +34,9 @@ public class TestControl {
 
     @Autowired
     private VfoodService vfoodService;
+
+    @Autowired
+    private StatisticsVfoodService statisticsVfoodService;
 
     @Autowired
     private ImpPhoneService impPhoneService;
