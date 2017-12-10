@@ -28,7 +28,7 @@
 <body>
 <div class="section">
     <h4>
-        人员统计查阅
+        成本核算
         <p>
             <a href="#" onclick="export_excel()">
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
