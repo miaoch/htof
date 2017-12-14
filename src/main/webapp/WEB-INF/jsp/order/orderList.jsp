@@ -31,9 +31,9 @@
     <h4>
         ${shopName }---订单详情
         <p>
-            <%--<a href="#" onclick="export_excel();">
-                <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
-            </a>--%>
+            <a href="#" id="info">
+                <i class="glyphicon glyphicon-search"></i>&nbsp;查看菜品详情&nbsp;&nbsp;
+            </a>
         </p>
     </h4>
     <form id="searchform" class="form-inline" role="form" action="orderList" method="get" style="margin: 5px 0px 0px 14px;">
@@ -55,7 +55,7 @@
                 <span style="width:15%">订单状态</span>
             </li>
             <c:forEach var="item" items="${list}">
-                <li>
+                <li onclick="oid = '${item.id}';">
                     <span style="width:20%">
                         <c:out value="${item.id}"/>
                     </span>
@@ -83,11 +83,34 @@
     </div>
 </div>
 <%@include file="../common/pagination.jsp" %>
+<%@include file="../common/modalinfo.jsp" %>
 <script src="${PATH }/easyui/jquery.easyui.min.js"></script>
 <script src="${PATH }/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
+    var oid;
+    $("#detail").modal({
+        show: false,
+        remote:"getOrder"
+    });
+    $('#info').click(function() {
+        if(oid == undefined){
+            swal("请选择一条记录！");
+            return;
+        }
+        $.ajax({
+            url:"getItems?orderId="+oid,
+            type:'get',
+            success:function(data){
+                refresh(JSON.parse(data));
+                $("#detail").modal({
+                    show: true,
+                });
+            }
+        });
+
+    });
     $("#search").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',

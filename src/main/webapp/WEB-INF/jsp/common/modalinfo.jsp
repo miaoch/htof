@@ -9,13 +9,4 @@
 $("#detail").on("hidden.bs.modal", function() {
    	$(this).removeData("bs.modal");
 });
-$('#log').click(function(){
-	if(id == undefined){
-		swal("请选择一条记录！");
-		return;
-	}
-	$("#detail").modal({
-	    remote: "log?id=" + id
-	});
-})
 </script>

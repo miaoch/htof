@@ -23,7 +23,12 @@ public class LoginControl {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() throws Exception {
+        return "login";
+    }
+
+    @RequestMapping(value = "/login",  method = RequestMethod.POST)
     public String login(String username, String password, HttpSession session, HttpServletRequest request) {
         logger.info("{} login at {}", username, DateUtil.currentDayInSecond());
         try {
@@ -35,7 +40,6 @@ public class LoginControl {
                 request.setAttribute("error", "1");
                 return "login";
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

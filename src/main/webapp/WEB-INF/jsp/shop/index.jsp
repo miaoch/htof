@@ -41,7 +41,7 @@
 </head>
 <body>
 	<div class="title">
-		<h2>旺克士后台管理平台&nbsp;-</h2><h4 style="line-height: 72px;padding-left: 0px;">&nbsp;店铺</h4>
+		<h2>旺克士后台管理平台&nbsp;-</h2><h4 style="line-height: 72px;padding-left: 0px;">&nbsp;店铺管理</h4>
 		<ul>
 			<li><a href="javascript:window.close();">退出</a></li>
 		</ul>

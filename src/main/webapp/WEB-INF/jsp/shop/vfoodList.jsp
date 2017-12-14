@@ -34,15 +34,12 @@
             <a href="#" id="info">
                 <i class="glyphicon glyphicon-search"></i>&nbsp;查看店铺信息&nbsp;&nbsp;
             </a>
+            <a href="#" id="init">
+                <i class="glyphicon glyphicon-search"></i>&nbsp;同步菜品信息&nbsp;&nbsp;
+            </a>
             <a href="#" id="setPrice">
                 <i class="glyphicon glyphicon-pencil"></i>&nbsp;设置成本价&nbsp;&nbsp;
             </a>
-            <%--<a href="#" id="edit">
-                <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑&nbsp;&nbsp;
-            </a>
-            <a href="#" id="remove">
-                <i class="glyphicon glyphicon-remove"></i>&nbsp;删除&nbsp;&nbsp;
-            </a>--%>
         </p>
     </h4>
     <form id="searchform" class="form-inline" role="form" action="commentList" method="get" style="margin: 5px 0px 0px 14px;">
@@ -96,9 +93,6 @@
             swal("请选择一条记录！");
             return;
         }
-        $("#detail").modal({
-            remote:"setPrice?vfoodId="+vid+"&shopId=${shopId}&curPage=${page.curPage}&pageSize=${page.pageSize}"
-        });
     });
     $("#search").datetimepicker({
         language: 'zh-CN',
@@ -111,6 +105,36 @@
         $('.spantip').tooltip();
         $("#search").change(function () {
             $("#searchform").submit();
+        });
+    });
+    $('#init').click(function() {
+        swal({
+            title: "确定要同步菜品吗？需要等待一段时间",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认！",
+            cancelButtonText: "取消！",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            imageUrl:"",
+        },function(isConfirm){
+            if(isConfirm){
+                $.ajax({
+                    url:'../test/initFood',
+                    type:'get',
+                    //dataType:'text',
+                    //data:"",
+                    success:function(data){
+                        if (data == "true") {
+                            location.reload(true);
+                        } else {
+                            swal("菜品同步失败！");
+                        }
+                    }
+                });
+            }
         });
     });
 </script>
