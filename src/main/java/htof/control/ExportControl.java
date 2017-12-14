@@ -69,6 +69,9 @@ public class ExportControl {
                                HttpServletRequest request, Model model) {
         PageBounds pb = new PageBounds(curPage, pageSize, Order.formString(sortStr));
         OrderLog params = new OrderLog();
+        if (StringUtil.isEmpty(starttime) && StringUtil.isEmpty(endtime)) {
+            starttime = DateUtil.currentDay();
+        }//如果都为空，设个默认值
         if (StringUtil.isNotEmpty(orderId)) params.setOrderId(orderId);
         long startlongtime = 0L;
         long endlongtime = 0L;

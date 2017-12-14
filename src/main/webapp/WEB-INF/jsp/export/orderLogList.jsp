@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/basepath.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -75,7 +76,7 @@
                         <c:out value="${item.income}"/>
                     </span>
                     <span style="width:15%">
-                        <c:out value="${item.income - item.cost}"/>
+						<fmt:formatNumber type="number" value="${item.income - item.cost}" pattern="0.00" maxFractionDigits="2"/>
                     </span>
                 </li>
             </c:forEach>
