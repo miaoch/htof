@@ -25,6 +25,7 @@ public class OrderLog  implements Serializable {
     private long userId;//饿了么的userId套用
     private String orderId;//饿了么的订单套用
     private double income;//毛利润
+    private double cost;//成本
 
     public double getIncome() {
         return income;
@@ -168,5 +169,13 @@ public class OrderLog  implements Serializable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }

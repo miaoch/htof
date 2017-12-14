@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,11 +77,11 @@ public class OrderControl {
         return "/order/orderDetail";
     }
 
-    @RequestMapping(value = "getItems", method = RequestMethod.GET, produces="text/html;charset=utf-8")
+    @RequestMapping(value = "getItemsCharts", method = RequestMethod.GET, produces="text/html;charset=utf-8")
     @ResponseBody
-    public String getItems(@RequestParam(value= "orderId") String orderId, Model model) {
+    public String getItemsCharts(@RequestParam(value= "orderId") String orderId, Model model) {
         OrderService orderService = new OrderService(ConfigUtil.getConfig(), ConfigUtil.getToken());
-        JSONArray items = new JSONArray();
+        JSONArray series = new JSONArray();
         try {
             OOrder order = orderService.getOrder(orderId);
             List<OGoodsGroup> oGoodsGroups = order.getGroups();
@@ -93,17 +95,78 @@ public class OrderControl {
                                 item.put("name", oGoodsItem.getName());
                                 item.put("quantity", oGoodsItem.getQuantity());
                                 item.put("price", oGoodsItem.getPrice());
-                                item.put("y", oGoodsItem.getTotal());
-                                items.put(item);
+                                JSONArray data = new JSONArray();
+                                data.put(oGoodsItem.getTotal());
+                                item.put("data", data);
+                                series.put(item);
                             }
                         }
                     }
                 }
             }
+            if (order.getPackageFee() != 0) {
+                JSONObject item = new JSONObject();
+                item.put("name", "餐盒费");
+                JSONArray data = new JSONArray();
+                data.put(order.getPackageFee());
+                item.put("data", data);
+                item.put("quantity", 1);
+                item.put("price", order.getPackageFee());
+                series.put(item);
+            }
+            if (order.getDeliverFee() != 0 && order.getVipDeliveryFeeDiscount()==0) {
+                JSONObject item = new JSONObject();
+                item.put("name", "配送费");
+                JSONArray data = new JSONArray();
+                data.put(order.getDeliverFee());
+                item.put("data", data);
+                item.put("quantity", 1);
+                item.put("price", order.getDeliverFee());
+                series.put(item);
+            }
+            if (order.getHongbao() != 0) {
+                JSONObject item = new JSONObject();
+                item.put("name", "红包");
+                JSONArray data = new JSONArray();
+                data.put(order.getHongbao());
+                item.put("quantity", 1);
+                item.put("price", order.getHongbao());
+                item.put("data", data);
+                series.put(item);
+            }
+            if (order.getActivityTotal() != 0) {
+                JSONObject item = new JSONObject();
+                item.put("name", "满减活动");
+                JSONArray data = new JSONArray();
+                data.put(order.getActivityTotal());
+                item.put("quantity", 1);
+                item.put("price", order.getActivityTotal());
+                item.put("data", data);
+                series.put(item);
+            }
+            JSONObject item = new JSONObject();
+            item.put("name", "饿了么收取");
+            JSONArray data = new JSONArray();
+            BigDecimal b1 = new BigDecimal(order.getIncome());
+            BigDecimal b2 = new BigDecimal(order.getTotalPrice());
+            data.put(b1.subtract(b2).setScale(2, RoundingMode.HALF_UP));
+            item.put("data", data);
+            item.put("quantity", 1);
+            item.put("price", - 1 * order.getActivityTotal());
+            series.put(item);
+
+            item = new JSONObject();
+            item.put("name", "毛收入");
+            data = new JSONArray();
+            data.put(order.getIncome());
+            item.put("data", data);
+            item.put("quantity", 1);
+            item.put("price", - 1 * order.getIncome());
+            series.put(item);
         } catch (ServiceException e) {
             logger.error("orderService.getOrder调用失败" + e);
             e.printStackTrace();
         }
-        return items.toString();
+        return series.toString();
     }
 }

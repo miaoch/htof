@@ -10,8 +10,8 @@ public class Vfood {
     private String categoryName;//饿了么分类名字
     private String name;
     private String description;
-    private double price;//售价
-    private double costPrice;//成本价
+    private double price;//成本价
+    private double costPrice;//售价
     private long wkscategoryId;//内部商品类别，分析数据用，待用
     private String wkscategoryName;//内部商品类别，分析数据用，待用
 

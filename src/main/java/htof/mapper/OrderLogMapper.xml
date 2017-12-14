@@ -23,6 +23,7 @@
     </resultMap>
     <resultMap id="orderlogExport" type="htof.pojo.export.OrderLogExport">
         <result property="shopName" column="shopName" jdbcType="VARCHAR"/>
+        <result property="orderId" column="orderId" jdbcType="VARCHAR"/>
         <result property="orderTime" column="orderTime" jdbcType="VARCHAR"/>
         <result property="orderDetails" column="orderDetails" jdbcType="VARCHAR"/>
         <result property="orderPrice" column="orderPrice" jdbcType="DECIMAL"/>
@@ -97,6 +98,7 @@
     <select id="selectExport" resultMap="orderlogExport">
         select
             shopName,
+            orderId,
             FROM_UNIXTIME(createtime/1000, '%Y-%m-%d %H:%I:%i') orderTime,
             orderDetails,
             orderPrice,
@@ -113,4 +115,13 @@
         from <include refid="table"/>
         <include refid="where"/>
     </select>
+
+    <select id="getCost" parameterType="java.lang.String" resultType="java.lang.Double">
+        select sum(v.price * ov.quantity) cost
+        from t_order_vfood ov
+        left join t_orderlog ol on ov.orderId = ol.orderId
+        inner join t_vfood v on v.id = ov.vfoodId
+        where ol.orderId = #{orderId}
+    </select>
+
 </mapper>

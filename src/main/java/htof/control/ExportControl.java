@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,9 @@ public class ExportControl {
         model.addAttribute("endtime", endtime);
         model.addAttribute("orderId", orderId);
         model.addAttribute("list", pageList);
+        for (OrderLog o : pageList) {
+            o.setCost(orderLogService.getCost(o.getOrderId()));
+        }
         model.addAttribute("page", new Page(pageList, request));
         return "/export/orderLogList";
     }
@@ -140,6 +144,13 @@ public class ExportControl {
         if (StringUtil.isNotEmpty(starttime)) startlongtime = DateUtil.getZeroLongtime(starttime);
         if (StringUtil.isNotEmpty(endtime)) endlongtime = DateUtil.getZeroLongtime(endtime) + 24 * 3600 * 1000;
         List<OrderLogExport> list = orderLogService.selectExport(params, startlongtime, endlongtime);
+        for (OrderLogExport ole : list) {
+            try {
+                ole.setCost(orderLogService.getCost(ole.getOrderId()));
+                ole.setRealIncome(Double.parseDouble(ole.getIncome()) - ole.getCost());
+            } catch (Exception e) {
+            }
+        }
         try{
             OutputStream os = response.getOutputStream();
             ExcelUtil.write2os(list, OrderLogExport.getTitle(), os, "xls");

@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class OrderLogExport  implements Serializable {
     private String shopName;//商店名称
+    private String orderId;//订单号
     private String orderTime;//下单时间
     private String orderDetails;//菜品详情
     private double orderPrice;//菜品价格
@@ -22,11 +23,13 @@ public class OrderLogExport  implements Serializable {
     private String customerAddress;//顾客地址
     private String customerPhone;//手机号
     private String income;//毛收入
+    private double cost;//成本
+    private double realIncome;//净利润
 
     public static String[] getTitle() {
         return new String[] {
-                "商店名称","下单时间","菜品详情","菜品价格","额外消费详情","额外消费","优惠详情","优惠价格",
-                "配送费","支付金额","顾客称呼","顾客地址","手机号","毛收入"
+                "商店名称","订单号","下单时间","菜品详情","菜品价格","额外消费详情","额外消费","优惠详情","优惠价格",
+                "配送费","支付金额","顾客称呼","顾客地址","手机号","毛收入","成本","净利润"
         };
     }
     public String getShopName() {
@@ -139,5 +142,29 @@ public class OrderLogExport  implements Serializable {
 
     public void setIncome(String income) {
         this.income = income;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getRealIncome() {
+        return realIncome;
+    }
+
+    public void setRealIncome(double realIncome) {
+        this.realIncome = realIncome;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }

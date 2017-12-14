@@ -32,4 +32,8 @@ public class OrderLogService extends BaseService<OrderLog> {
     public List<OrderLogExport> selectExport(OrderLog params, long starttime, long endtime) {
         return orderLogDao.selectExport(params, starttime, endtime);
     }
+
+    public double getCost(String orderId) {
+        return orderLogDao.getCost(orderId);
+    }
 }

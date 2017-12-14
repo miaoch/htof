@@ -15,7 +15,7 @@
     <h4 class="modal-title" id="exampleModalLabel">菜品图表分析</h4>
 </div>
 <div class="modal-body">
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="container" style="min-width: 550px; height: 400px; margin: 0 auto"></div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -40,32 +40,22 @@ function refresh(data) {
         },
         yAxis: {
             title: {
-                text: '总售价'
+                text: '金额'
             }
-        },
-        legend: {
-            enabled: false
         },
         plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%'
+                    format: '{point.y}'
                 }
             }
         },
         tooltip: {
-            headerFormat: '',
-            pointFormat: '<span style="font-size:11px">{point.name}:</span><br>' +
-                            '<span style="font-size:11px">单价：{point.price}</span><br>' +
-                            '<span style="font-size:11px">数量：{point.quantity}</span><br>'
+            headerFormat:''
         },
-        series: [{
-            name: '菜品',
-            colorByPoint: true,
-            data: data
-        }],
+        series: data
     });
 }
 </script>

@@ -33,6 +33,11 @@
                 <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;导出excel&nbsp;&nbsp;
             </a>
         </p>
+        <p>
+            <a href="#" id="info">
+                <i class="glyphicon glyphicon-search"></i>&nbsp;查看菜品详情&nbsp;&nbsp;
+            </a>
+        </p>
     </h4>
     <form id="searchform" class="form-inline" role="form" action="orderLogList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
@@ -47,30 +52,30 @@
             <li class="citytitle">
                 <em style="width:15%">店铺</em>
                 <span style="width:20%">订单号</span>
-                <span style="width:10%">消费金额</span>
                 <span style="width:15%">用户手机号</span>
-                <span style="width:20%">用户地址</span>
                 <span style="width:20%">用户姓名</span>
+                <span style="width:15%">毛收入</span>
+                <span style="width:15%">净利润</span>
             </li>
             <c:forEach var="item" items="${list}">
-                <li>
+                <li onclick="oid = '${item.orderId}';">
                     <em style="width:15%">
                         <c:out value="${item.shopName}"/>
                     </em>
                     <span style="width:20%">
                         <c:out value="${item.orderId}"/>
                     </span>
-                    <span style="width:10%">
-                        <c:out value="${item.totalPay}"/>
-                    </span>
                     <span style="width:15%">
                         <c:out value="${item.customerPhone}"/>
                     </span>
-                    <span style="width:20%" title="${item.customerAddress}">
-                        <c:out value="${item.customerAddress}"/>
-                    </span>
                     <span style="width:20%">
                         <c:out value="${item.customerName}"/>
+                    </span>
+                    <span style="width:15%">
+                        <c:out value="${item.income}"/>
+                    </span>
+                    <span style="width:15%">
+                        <c:out value="${item.income - item.cost}"/>
                     </span>
                 </li>
             </c:forEach>
@@ -78,11 +83,33 @@
     </div>
 </div>
 <%@include file="../common/pagination.jsp" %>
+<%@include file="../common/modalinfo.jsp" %>
 <script src="${PATH }/easyui/jquery.easyui.min.js"></script>
 <script src="${PATH }/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
+    var oid;
+    $("#detail").modal({
+        show: false,
+        remote:"../order/getOrder"
+    });
+    $('#info').click(function() {
+        if(oid == undefined){
+            swal("请选择一条记录！");
+            return;
+        }
+        $.ajax({
+            url:"../order/getItemsCharts?orderId="+oid,
+            type:'get',
+            success:function(data){
+                refresh(JSON.parse(data));
+                $("#detail").modal({
+                    show: true,
+                });
+            }
+        });
+    });
     $("#starttime").datetimepicker({
         language: 'zh-CN',
         format: 'yyyy-mm-dd',

@@ -100,7 +100,7 @@
             return;
         }
         $.ajax({
-            url:"getItems?orderId="+oid,
+            url:"getItemsCharts?orderId="+oid,
             type:'get',
             success:function(data){
                 refresh(JSON.parse(data));
@@ -109,7 +109,6 @@
                 });
             }
         });
-
     });
     $("#search").datetimepicker({
         language: 'zh-CN',
