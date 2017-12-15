@@ -24,6 +24,7 @@
 				<label for="description" class="control-label">简述:</label>
 				<textarea style="height: 100px;" class="form-control"
 						  id="description" name="description" disabled>${shop.description }</textarea>
+
 			</div>
 		</form>
 	</div>

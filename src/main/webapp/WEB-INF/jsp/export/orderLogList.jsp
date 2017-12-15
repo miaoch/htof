@@ -42,6 +42,13 @@
     </h4>
     <form id="searchform" class="form-inline" role="form" action="orderLogList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
+            <select class="form-control" id="shopId" name="shopId" >
+                <option value="">所有店铺</option>
+                <c:forEach var="shop" items="${shopList}">
+                    <option value="${shop.id}"
+                            <c:if test='${shop.id == shopId}'>selected="selected"</c:if>>${shop.name}</option>
+                </c:forEach>
+            </select>
             <input type="text" class="form-control" id="orderId" name="orderId" value="${orderId }" placeholder="订单号">
             <input type="text" class="form-control" id="starttime" name="starttime" value="${starttime }" placeholder="开始时间" readonly>
             <input type="text" class="form-control" id="endtime" name="endtime" value="${endtime }" placeholder="结束时间" readonly>
@@ -76,7 +83,9 @@
                         <c:out value="${item.income}"/>
                     </span>
                     <span style="width:15%">
-						<fmt:formatNumber type="number" value="${item.income - item.cost}" pattern="0.00" maxFractionDigits="2"/>
+                        <c:if test="${item.cost != null}">
+						    <fmt:formatNumber type="number" value="${item.income - item.cost}" pattern="0.00" maxFractionDigits="2"/>
+                        </c:if>
                     </span>
                 </li>
             </c:forEach>
@@ -129,7 +138,7 @@
         $('.spantip').tooltip();
     });
     function export_excel() {
-        window.open("exportOrderlogExcel?orderId=${orderId}&starttime=${starttime}&endtime=${endtime}");
+        window.open("exportOrderlogExcel?orderId=${orderId}&starttime=${starttime}&endtime=${endtime}&shopId=${shopId}");
     }
 </script>
 </body>

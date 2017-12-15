@@ -19,8 +19,8 @@
     </resultMap>
     <sql id="where">
         <trim prefix="WHERE" prefixOverrides="AND | OR ">
-            <if test="phone != null and phone != 0">
-                and phone like concat('%', ${phone}, '%')
+            <if test="phone != null and phone != ''">
+                and phone like concat('%', #{phone}, '%')
             </if>
             <if test="lasttime != null and lasttime != 0">
                 and lasttime >= #{lasttime}
@@ -28,8 +28,11 @@
             <if test="userId != null and userId != 0">
                 and userId = #{userId}
             </if>
-            <if test="name != null and name != 0">
-                and name like concat('%', ${name}, '%')
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="count != null and count != 0">
+                and count &gt;= #{count}
             </if>
         </trim>
     </sql>
@@ -66,5 +69,61 @@
         count, FROM_UNIXTIME(lasttime/1000, '%Y-%m-%d %H:%I:%i') lasttime
         from <include refid="table"/>
         <include refid="where"/>
+    </select>
+
+    <select id="selectFilter" parameterType="java.util.Map" resultMap="customer">
+        select c.phone, c.userId, c.name, c.address, c.lasttime, sum(ov.quantity) count
+        from t_customer c
+        LEFT JOIN t_orderlog o on c.userId = o.userId
+        LEFT JOIN t_order_vfood ov on o.orderId = ov.orderId
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="phone != null">
+                and c.phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="lasttime != null and lasttime != 0">
+                and c.lasttime >= #{lasttime}
+            </if>
+            <if test="userId != null and userId != 0">
+                and c.userId = #{userId}
+            </if>
+            <if test="name != null">
+                and c.name like concat('%', #{name}, '%')
+            </if>
+            <if test="vfoodId != null and vfoodId != 0">
+                and ov.vfoodId = #{vfoodId}
+            </if>
+        </trim>
+        group by c.userId, ov.vfoodId
+        <if test="count != null and count != 0">
+            HAVING (sum(ov.quantity) &gt;= #{count})
+        </if>
+    </select>
+
+    <select id="selectFilterExport" parameterType="java.util.Map" resultMap="customerExport">
+        select c.phone, c.userId, c.name, c.address,sum(ov.quantity) count, FROM_UNIXTIME(c.lasttime/1000, '%Y-%m-%d %H:%I:%i') lasttime
+        from t_customer c
+        LEFT JOIN t_orderlog o on c.userId = o.userId
+        LEFT JOIN t_order_vfood ov on o.orderId = ov.orderId
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="phone != null">
+                and c.phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="lasttime != null and lasttime != 0">
+                and c.lasttime >= #{lasttime}
+            </if>
+            <if test="userId != null and userId != 0">
+                and c.userId = #{userId}
+            </if>
+            <if test="name != null">
+                and c.name like concat('%', #{name}, '%')
+            </if>
+            <if test="vfoodId != null and vfoodId != 0">
+                and ov.vfoodId = #{vfoodId}
+            </if>
+        </trim>
+        group by c.userId, ov.vfoodId
+        <if test="count != null and count != 0">
+            HAVING (sum(ov.quantity) &gt;= #{count})
+        </if>
     </select>
 </mapper>

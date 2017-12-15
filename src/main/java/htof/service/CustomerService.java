@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by miaoch on 2017/11/3.
@@ -26,5 +27,13 @@ public class CustomerService extends BaseService<Customer> {
 
     public List<CustomerExport> selectExport(Customer ol) {
         return customerDao.selectExport(ol);
+    }
+
+    public PageList<Customer> selectFilter(Map obj, PageBounds pg) {
+        return customerDao.selectFilter(obj, pg);
+    }
+
+    public List<CustomerExport> selectFilterExport(Map params) {
+        return customerDao.selectFilterExport(params);
     }
 }

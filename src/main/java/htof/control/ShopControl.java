@@ -10,6 +10,7 @@ import eleme.openapi.sdk.api.entity.ugc.OpenapiOrderRate;
 import eleme.openapi.sdk.api.exception.ServiceException;
 import eleme.openapi.sdk.api.service.ProductService;
 import eleme.openapi.sdk.api.service.UgcService;
+import htof.pojo.Shop;
 import htof.pojo.Vfood;
 import htof.service.ShopService;
 import htof.service.VfoodService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +94,15 @@ public class ShopControl {
                             @RequestParam(value= "sort", defaultValue = "categoryId,id") String sortStr,
                             @RequestParam(value= "shopId") Long shopId,
                             HttpServletRequest request, Model model) {
+        eleme.openapi.sdk.api.service.ShopService shopWebService =
+                new eleme.openapi.sdk.api.service.ShopService(ConfigUtil.getConfig(), ConfigUtil.getToken());
+        try {
+            OShop shop = shopWebService.getShop(shopId);
+            model.addAttribute("shop", shop);
+        } catch (ServiceException e) {
+            logger.error("ShopService.getShop调用失败" + e);
+            e.printStackTrace();
+        }
         PageBounds pb = new PageBounds(curPage, pageSize, Order.formString(sortStr));
         Vfood param = new Vfood();
         param.setShopId(shopId);
@@ -101,5 +112,23 @@ public class ShopControl {
         model.addAttribute("list", pageList);
         model.addAttribute("page", new Page(pageList, request));
         return "/shop/vfoodList";
+    }
+
+    @RequestMapping(value = "getShopList", method = RequestMethod.GET)
+    public String getShopList(HttpServletRequest request, Model model) {
+        eleme.openapi.sdk.api.service.ShopService shopWebService =
+                new eleme.openapi.sdk.api.service.ShopService(ConfigUtil.getConfig(), ConfigUtil.getToken());
+        List<OShop> oshops = new ArrayList<OShop>();
+        for (Shop shop : shopService.selectAllShop()) {
+            try {
+                OShop oshop = shopWebService.getShop(shop.getId());
+                oshops.add(oshop);
+            } catch (ServiceException e) {
+                logger.error("ShopService.getShop调用失败" + e);
+                e.printStackTrace();
+            }
+        }
+        model.addAttribute("list", oshops);
+        return "/shop/shopList";
     }
 }

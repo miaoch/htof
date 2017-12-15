@@ -38,7 +38,7 @@
     <form id="searchform" class="form-inline" role="form" action="statisticsVfoodList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
             <select class="form-control" id="shopId" name="shopId" >
-                <option value="">所有</option>
+                <option value="">所有店铺</option>
                 <c:forEach var="shop" items="${shopList}">
                     <option value="${shop.id}"
                             <c:if test='${shop.id == shopId}'>selected="selected"</c:if>>${shop.name}</option>

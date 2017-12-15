@@ -52,6 +52,9 @@
 	<div class="main">
 		<div class="aside" style="padding:0">
 			<div class="list-group" id="label">
+				<a href="shop/getShopList" target="listFrame" class="list-group-item">
+					<i class="glyphicon glyphicon-th-list"></i>&nbsp;&nbsp;店铺概况
+				</a>
 				<c:forEach var="shop" items="${shopList}">
 					<a href="shop/vfoodList?shopId=${shop.id}" target="listFrame" class="list-group-item">
 						<i class="glyphicon glyphicon-th-list"></i>&nbsp;&nbsp;${shop.name}

@@ -43,7 +43,7 @@
             <if test="obj.id != null and obj.id != 0">
                 and id = #{obj.id}
             </if>
-            <if test="obj.shopId != null and obj.id != 0">
+            <if test="obj.shopId != null and obj.shopId != 0">
                 and shopId = #{obj.shopId}
             </if>
             <if test="obj.shopName != null">
@@ -114,6 +114,7 @@
             income
         from <include refid="table"/>
         <include refid="where"/>
+        order by shopId, createtime
     </select>
 
     <select id="getCost" parameterType="java.lang.String" resultType="java.lang.Double">

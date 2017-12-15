@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>菜品管理</title>
+    <title>所有店铺</title>
     <link href="${PATH}/js/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="${PATH}/css/bootstrap.min.css" rel="stylesheet">
@@ -29,23 +29,10 @@
 <body>
 <div class="section">
     <h4>
-        ${shopName }---菜品查看&nbsp;&nbsp;
-            <c:if test="${shop.isOpen == 0}">
-                <span style="color: red">未营业</span>
-            </c:if>
-            <c:if test="${shop.isOpen == 1}">
-                <span style="color: #00ee00">营业中</span>
-            </c:if>
-            <c:if test="${shop.servingTime != null}">
-                &nbsp;&nbsp;营业时间：${shop.servingTime[0]}
-            </c:if>
-
+        店铺列表&nbsp;&nbsp;
         <p class="sectionP">
-            <a href="#" id="info">
-                <i class="glyphicon glyphicon-search"></i>&nbsp;查看店铺信息&nbsp;&nbsp;
-            </a>
-            <a href="#" id="setPrice">
-                <i class="glyphicon glyphicon-pencil"></i>&nbsp;设置成本价&nbsp;&nbsp;
+            <a href="#" id="init">
+                <i class="glyphicon glyphicon-search"></i>&nbsp;同步菜品信息&nbsp;&nbsp;
             </a>
         </p>
     </h4>
@@ -54,32 +41,29 @@
     <div class="table">
         <ul class="tableList tableList2">
             <li class="citytitle">
-                <span style="width:10%">菜品ID</span>
-                <span style="width:20%">分类名</span>
-                <span style="width:24%">菜品名</span>
-                <span style="width:30%">描述</span>
-                <span style="width:8%">标价</span>
-                <span style="width:8%">设置成本价</span>
+                <span style="width:20%">店铺名</span>
+                <span style="width:50%">店铺描述</span>
+                <span style="width:10%">营业状态</span>
+                <span style="width:20%">营业时间</span>
             </li>
             <c:forEach var="item" items="${list}">
-                <li onclick="vid = '${item.id}';" ondblclick="$('#setPrice').click();">
-                    <span style="width:10%">
-                        <c:out value="${item.id}"/>
-                    </span>
+                <li>
                     <span style="width:20%">
-                        <c:out value="${item.categoryName}"/>
-                    </span>
-                    <span style="width:24%">
                         <c:out value="${item.name}"/>
                     </span>
-                    <span style="width:30%" title="${item.description}">
+                    <span title="${item.description}" style="width:50%">
                         <c:out value="${item.description}"/>
                     </span>
-                    <span style="width:8%">
-                        <c:out value="${item.costPrice}"/>
+                    <span style="width:10%">
+                        <c:if test="${item.isOpen == 0}">
+                            <div style="color: red">未营业</div>
+                        </c:if>
+                        <c:if test="${item.isOpen == 1}">
+                            <div style="color: #00ee00">营业中</div>
+                        </c:if>
                     </span>
-                    <span style="width:8%">
-                        <c:out value="${item.price}"/>
+                    <span style="width:20%">
+                        <c:out value="${item.servingTime[0]}"/>
                     </span>
                 </li>
             </c:forEach>
@@ -93,29 +77,40 @@
 <script src="${PATH}/js/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="${PATH}/js/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
-    var vid;
-    $('#info').click(function() {
-        $("#detail").modal({
-            remote:"getShop?shopId=${shopId}"
-        });
-    });
-    $('#setPrice').click(function() {
-        if(vid == undefined){
-            swal("请选择一条记录！");
-            return;
-        }
-    });
-    $("#search").datetimepicker({
-        language: 'zh-CN',
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        startView: 2,
-        minView: 2,
-    });
     $(function () {
         $('.spantip').tooltip();
         $("#search").change(function () {
             $("#searchform").submit();
+        });
+    });
+    $('#init').click(function() {
+        swal({
+            title: "确定要同步菜品吗？需要等待一段时间",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认！",
+            cancelButtonText: "取消！",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            imageUrl:"",
+        },function(isConfirm){
+            if(isConfirm){
+                $.ajax({
+                    url:'../test/initFood',
+                    type:'get',
+                    //dataType:'text',
+                    //data:"",
+                    success:function(data){
+                        if (data == "true") {
+                            location.reload(true);
+                        } else {
+                            swal("菜品同步失败！");
+                        }
+                    }
+                });
+            }
         });
     });
 </script>

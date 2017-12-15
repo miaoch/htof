@@ -38,6 +38,9 @@
     <form id="searchform" class="form-inline" role="form" action="customerList" method="get" style="margin: 5px 0px 0px 14px;">
         <div class="form-group">
             <input type="text" class="form-control" id="phone" name="phone" value="${phone }" placeholder="手机号">
+            <input type="text" class="form-control" id="name" name="name" value="${name }" placeholder="姓名">
+            <input type="text" class="form-control" id="vfoodId" name="vfoodId" value="${vfoodId }" placeholder="菜品ID">
+            <input type="text" class="form-control" id="count" name="count" value="${count }" placeholder="数量">
             <input type="text" class="form-control" id="date" name="date" value="${date }" placeholder="最后一次购买时间" readonly>
         </div>
         <button type="submit" class="btn btn-default">搜&nbsp;索</button>
@@ -94,7 +97,7 @@
         $('.spantip').tooltip();
     });
     function export_excel() {
-        window.open("exportCustomerExcel?phone=${phone}&date=${date}");
+        window.open("exportCustomerExcel?phone=${phone}&date=${date}&name=${name}&count=${count}&vfoodId=${vfoodId}");
     }
 </script>
 </body>
