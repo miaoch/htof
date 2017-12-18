@@ -100,10 +100,14 @@
         });
     });
     $('#setPrice').click(function() {
+        debugger;
         if(vid == undefined){
             swal("请选择一条记录！");
             return;
         }
+        $("#detail").modal({
+            remote:"setPrice?vfoodId="+vid+"&curPage=${page.curPage}&pageSize=${page.pageSize}&shopId=${shopId}"
+        });
     });
     $("#search").datetimepicker({
         language: 'zh-CN',
