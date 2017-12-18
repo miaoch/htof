@@ -317,6 +317,62 @@ public class ExcelUtil {
 		}
 	}
 
+	/**
+	 * 将list数据写入一个新的out流
+	 * @param data
+	 * @param os
+	 * @param type
+	 */
+	public static void write2os(Class c, List data, String[] title, OutputStream os, String type) {
+		Workbook workbook = null;
+		Sheet sheet = null;
+		if ("xls".equals(type)) {
+			workbook = new HSSFWorkbook();
+			workbook.createSheet();
+		} else if("xlsx".equals(type)) {
+			workbook = new XSSFWorkbook();
+			workbook.createSheet();
+		} else {
+			System.out.println("请输入正确的类型！(只支持xls和xlsx)");
+			return;
+		}
+		sheet = workbook.getSheetAt(DEFAUL_SHEET);
+		int offset = 0;
+		if (title != null) {
+			Row row = sheet.createRow(0);
+			for (int i=0; i < title.length; i++) {
+				Cell cell = row.createCell(i);
+				cell.setCellValue(title[i]);
+			}
+			offset = 1;
+		}
+		Field[] fields = c.getDeclaredFields();
+		for (int index=0; index<data.size(); index++) {
+			Row row = sheet.createRow(index + offset);
+			Object obj = data.get(index);
+			for (int i=0; i < fields.length; i++) {
+				Cell cell = row.createCell(i);
+				fields[i].setAccessible(true);
+				try {
+					Object value = fields[i].get(obj);
+					if (value instanceof Number) {
+						cell.setCellValue(((Number)value).doubleValue());
+					} else {
+						cell.setCellValue(value.toString());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			data.set(index, null);//用于gc释放内存
+		}
+		try {
+			workbook.write(os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/*public static void main(String args[]) throws IOException {
 		List data = new ArrayList<>();
 		for (int i=0; i<10; i++) {

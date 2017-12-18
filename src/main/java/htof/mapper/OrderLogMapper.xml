@@ -37,6 +37,8 @@
         <result property="customerName" column="customerName" jdbcType="VARCHAR"/>
         <result property="customerAddress" column="customerAddress" jdbcType="VARCHAR"/>
         <result property="income" column="income" jdbcType="DECIMAL"/>
+        <result property="cost" column="cost" jdbcType="DECIMAL"/>
+        <result property="realIncome" column="realIncome" jdbcType="DECIMAL"/>
     </resultMap>
     <sql id="where">
         <trim prefix="WHERE" prefixOverrides="AND | OR ">
@@ -97,24 +99,54 @@
     <!-- 分页查询订单记录 -->
     <select id="selectExport" resultMap="orderlogExport">
         select
-            shopName,
-            orderId,
-            FROM_UNIXTIME(createtime/1000, '%Y-%m-%d %H:%I:%i') orderTime,
-            orderDetails,
-            orderPrice,
-            lunchDetails,
-            lunchFee,
-            discountDetails,
-            discountPrice,
-            deliverFee,
-            totalPay,
-            customerPhone,
-            customerName,
-            customerAddress,
-            income
-        from <include refid="table"/>
-        <include refid="where"/>
-        order by shopId, createtime
+            ol.shopName,
+            ol.orderId,
+            FROM_UNIXTIME(ol.createtime/1000, '%Y-%m-%d %H:%I:%i') orderTime,
+            ol.orderDetails,
+            ol.orderPrice,
+            ol.lunchDetails,
+            ol.lunchFee,
+            ol.discountDetails,
+            ol.discountPrice,
+            ol.deliverFee,
+            ol.totalPay,
+            ol.customerPhone,
+            ol.customerName,
+            ol.customerAddress,
+            ol.income,
+            sum(v.price * ov.quantity) cost,
+            (ol.income - sum(v.price * ov.quantity)) realIncome
+            from t_orderlog ol
+            LEFT JOIN t_order_vfood ov ON ov.orderId = ol.orderId
+            left JOIN t_vfood v ON v.id = ov.vfoodId
+            <trim prefix="WHERE" prefixOverrides="AND | OR ">
+                <if test="obj.id != null and obj.id != 0">
+                    and ol.id = #{obj.id}
+                </if>
+                <if test="obj.shopId != null and obj.shopId != 0">
+                    and ol.shopId = #{obj.shopId}
+                </if>
+                <if test="obj.shopName != null">
+                    and ol.shopName = #{obj.shopName}
+                </if>
+                <if test="obj.customerPhone != null">
+                    and ol.customerPhone = #{obj.customerPhone}
+                </if>
+                <if test="obj.userId != null and obj.userId != 0">
+                    and ol.userId = #{obj.userId}
+                </if>
+                <if test="obj.orderId != null">
+                    and ol.orderId like concat('%', ${obj.orderId}, '%')
+                </if>
+                <if test="starttime != null and starttime!=0">
+                    and ol.createtime &gt; #{starttime}
+                </if>
+                <if test="endtime != null and endtime!=0">
+                    and ol.createtime &lt; #{endtime}
+                </if>
+            </trim>
+            GROUP BY ol.id
+            order by ol.shopId, ol.createtime
     </select>
 
     <select id="getCost" parameterType="java.lang.String" resultType="java.lang.Double">

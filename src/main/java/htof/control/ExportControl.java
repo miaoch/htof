@@ -107,7 +107,7 @@ public class ExportControl {
         response.addHeader("Cache-Control","no-cache");
         response.addDateHeader("Expries",0);
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.addHeader("Content-Disposition","attachment;filename=order.xls");
+        response.addHeader("Content-Disposition","attachment;filename=order.xlsx");
         OrderLog params = new OrderLog();
         if (StringUtil.isNotEmpty(orderId)) params.setOrderId(orderId);
         if (shopId != null && shopId > 0) params.setShopId(shopId);
@@ -116,17 +116,9 @@ public class ExportControl {
         if (StringUtil.isNotEmpty(starttime)) startlongtime = DateUtil.getZeroLongtime(starttime);
         if (StringUtil.isNotEmpty(endtime)) endlongtime = DateUtil.getZeroLongtime(endtime) + 24 * 3600 * 1000;
         List<OrderLogExport> list = orderLogService.selectExport(params, startlongtime, endlongtime);
-        for (OrderLogExport ole : list) {
-            try {
-                ole.setCost(orderLogService.getCost(ole.getOrderId()));
-                ole.setRealIncome(Double.parseDouble(ole.getIncome()) - ole.getCost());
-            } catch (Exception e) {
-                logger.error(ole.getOrderId() + "计算成本失败");
-            }
-        }
         try{
             OutputStream os = response.getOutputStream();
-            ExcelUtil.write2os(list, OrderLogExport.getTitle(), os, "xls");
+            ExcelUtil.write2os(OrderLogExport.class, list, OrderLogExport.getTitle(), os, "xlsx");
             os.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -182,7 +174,7 @@ public class ExportControl {
         response.addHeader("Cache-Control","no-cache");
         response.addDateHeader("Expries",0);
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.addHeader("Content-Disposition","attachment;filename=phone.xls");
+        response.addHeader("Content-Disposition","attachment;filename=phone.xlsx");
         List<CustomerExport> list;
         if (StringUtil.isEmpty(vfoodId)) {
             Customer params = new Customer();
@@ -202,7 +194,7 @@ public class ExportControl {
         }
         try{
             OutputStream os = response.getOutputStream();
-            ExcelUtil.write2os(list, CustomerExport.getTitle(), os, "xls");
+            ExcelUtil.write2os(CustomerExport.class, list, CustomerExport.getTitle(), os, "xlsx");
             os.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,7 +247,7 @@ public class ExportControl {
         if (StringUtil.isEmpty(beginDate) && StringUtil.isEmpty(endDate)) {
             beginDate = DateUtil.currentDay();
         }//如果都为空，设个默认值
-        response.addHeader("Content-Disposition","attachment;filename="+beginDate+"~"+endDate+".xls");
+        response.addHeader("Content-Disposition","attachment;filename="+beginDate+"~"+endDate+".xlsx");
         Map params = new HashMap();
         if (StringUtil.isNotEmpty(beginDate)) {
             long beginLongtime = DateUtil.getZeroLongtime(beginDate);
@@ -271,7 +263,7 @@ public class ExportControl {
         List<StatisticsVfoodExport> list= statisticsVfoodService.selectExportByMap(params);
         try{
             OutputStream os = response.getOutputStream();
-            ExcelUtil.write2os(list, StatisticsVfoodExport.getTitle(), os, "xls");
+            ExcelUtil.write2os(StatisticsVfood.class, list, StatisticsVfoodExport.getTitle(), os, "xlsx");
             os.flush();
         } catch (Exception e) {
             e.printStackTrace();
