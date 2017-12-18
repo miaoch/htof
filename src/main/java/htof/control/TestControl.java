@@ -1,5 +1,7 @@
 package htof.control;
 
+import com.alibaba.fastjson.JSONObject;
+import com.dingtalk.oapi.lib.aes.DingTalkEncryptor;
 import eleme.openapi.sdk.api.entity.order.OrderList;
 import eleme.openapi.sdk.api.exception.ServiceException;
 import eleme.openapi.sdk.api.service.OrderService;
@@ -10,15 +12,13 @@ import htof.service.TestService;
 import htof.service.VfoodService;
 import htof.task.OrderTask;
 import htof.util.ConfigUtil;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -47,6 +47,31 @@ public class TestControl {
         JSONObject json = new JSONObject();
         json.put("message", "ok");
         return json.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/suite/create/{suiteKey}", method = {RequestMethod.POST})
+    public Map<String, String> suiteCreate(
+            @PathVariable("suiteKey") String suiteKey,
+            @RequestParam(value = "signature", required = false) String signature,
+            @RequestParam(value = "timestamp", required = false) String timestamp,
+            @RequestParam(value = "nonce", required = false) String nonce,
+            @RequestBody(required = false) JSONObject json
+    ) {
+        try {
+            logger.info("钉钉套件回调接口");
+            DingTalkEncryptor dingTalkEncryptor = new DingTalkEncryptor("1234567890", "0jrd22uojzuawx5ejiniuv12yi1i8ar7lh0pn9osi8z", suiteKey);
+            String encryptMsg = json.getString("encrypt");
+            String plainText = dingTalkEncryptor.getDecryptMsg(signature, timestamp, nonce, encryptMsg);
+            JSONObject callbackMsgJson = JSONObject.parseObject(plainText);
+            String random = callbackMsgJson.getString("Random");
+            String responseEncryMsg = random;
+            Map encryptedMap = dingTalkEncryptor.getEncryptedMap(responseEncryMsg, System.currentTimeMillis(), com.dingtalk.oapi.lib.aes.Utils.getRandomStr(8));
+            return encryptedMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @RequestMapping(value = "/getToken")
